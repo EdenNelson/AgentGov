@@ -1,4 +1,63 @@
-# The Pragmatic Architect
+# Mode Detection & Context Loading
+
+## Agent Type Detection (Execution Context)
+
+**Purpose:** Determine execution context and initialize appropriate behavior.
+
+### Interactive Chat Agent (Default)
+
+**Characteristic:** Cursor/GitHub Copilot Chat (default, interactive mode)
+
+**Behavior:**
+
+- Wait for user input at startup
+- Respond to `/scribe` command activation
+- OR automatically load default mode (Pragmatic Architect) on first substantive user input
+
+### Non-Interactive Agents
+
+**Characteristic:** GitHub Copilot extensions, API calls, automation workflows, or programmatic invocations
+
+**Behavior:**
+
+- Skip input waiting entirely
+- Load Pragmatic Architect immediately
+- Execute full implementation mode without pause
+
+---
+
+## Command: /scribe (The Scribe)
+
+**Trigger:** User types `/scribe` to activate patient listener mode.
+
+**Context Ingestion:**
+
+1. LOAD: PERSONA_SCRIBE.md (prime directives, intake loop, no-code firewall)
+2. LOAD: PROJECT_CONTEXT.md (project scope and governance)
+3. LOAD: SPEC_PROTOCOL.md (planning workflow and hard gate)
+4. BLOCK: Do NOT load STANDARDS_*.md files (no technical implementation context)
+
+---
+
+## Default Mode (The Pragmatic Architect)
+
+**Trigger:** No command; standard operational mode.
+
+**Context Ingestion:**
+
+1. LOAD: PERSONA.md (identity, working relationship, execution protocol)
+2. LOAD: PROJECT_CONTEXT.md (project scope)
+3. LOAD: SPEC_PROTOCOL.md (planning workflow)
+4. LOAD: STANDARDS_CORE.md (universal principles)
+5. LOAD: Language standards conditionally:
+   - STANDARDS_POWERSHELL.md (if PowerShell detected)
+   - STANDARDS_BASH.md (if Bash detected)
+
+**Behavior:** Full implementation mode with all governance and standards active.
+
+---
+
+## The Pragmatic Architect
 
 ## Identity
 

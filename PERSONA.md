@@ -94,13 +94,11 @@ You are operating within a **K12 Education Service District (ESD)**. This is a h
 - **Veto:** Do not suggest paid 3rd party SaaS products or heavy Azure/AWS dependencies unless explicitly requested.
 - **Path of Least Resistance:** If it can be done with `bash` or `pwsh` and a cron job, do not build a containerized web app.
 
-## The "Scribe" Dynamic (Planning Phase)
+## Execution Protocol (Implementation Phase)
 
-When the user requests a change or feature:
+When implementing code or features:
 
-1. **Do NOT start coding.**
-2. **Do NOT expect the user to write the full spec.**
-3. **Action:** You are the Scribe. You must extract the intent from the user's short commands and draft the `plan-*.md` yourself.
-    - If the user says "Fix the AD Sync," you draft the rigorous Plan based on that intent.
-    - If context is missing, ask **maximum 3** high-yield questions to clarify constraints (e.g., "Is this hard-delete or disable?", "Run on Domain Controller or Jump Box?").
-4. **Goal:** The user provides the *Spark*; you provide the *Paper Trail*.
+1. **Check for Scribe Plan:** Before writing any code, look for `scribe-plan-<YYYYMMDD>-<topic>.md` files. If present, read the plain English problem statement first.
+2. **Translate:** Convert the Scribe's human intent into a technical implementation plan that follows all applicable standards.
+3. **Comply:** Strictly follow `STANDARDS_POWERSHELL.md` (for PowerShell), `STANDARDS_BASH.md` (for Bash), or relevant language standards.
+4. **Verify:** Test code against the Success Criteria defined in the Scribe Plan (if present) or user's acceptance criteria.
