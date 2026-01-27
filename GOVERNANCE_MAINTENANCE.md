@@ -5,11 +5,25 @@
 ### Starting Governance Maintenance Mode
 
 To begin a governance maintenance cycle, invoke with:
-```
+
+```text
 Please start governance maintenance mode: scan all governance rules and produce an ADR-0001 format suspect list.
 ```
 
 This triggers **Session 1** of a four-session workflow documented in `.github/adr/README.md`.
+
+### ADR Numbering: Pre-Check Before Generation
+
+Before Creating an ADR, Check Existing ADRs First:
+
+Before generating any new ADR file:
+
+1. **List the `.github/adr/` directory** to identify all existing ADRs (files matching `####-*.md` pattern, where `####` is a zero-padded number).
+2. **Determine the next ADR number** by finding the highest existing ADR number and incrementing by 1.
+3. **Use the correct filename format:** `NNNN-descriptive-title.md` (e.g., `0005-powershell-windows-compatibility.md`).
+4. **Update the ADR header** to match: `# ADR-NNNN: Title`.
+
+This prevents the manual renaming work after generation and ensures consistent numbering from the start.
 
 **Expected Output:** An ADR in `.github/adr/` with status `Proposed` containing a suspect list of problematic rules.
 

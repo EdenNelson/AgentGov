@@ -13,6 +13,45 @@ Authoritative rules for AI-generated changes in this repository. Apply these ins
 - Keep outputs concise; avoid re-quoting large prior sections—link or summarize instead.
 - Do not modify digital signature blocks.
 
+## File Encoding and Line Endings (CRITICAL — macOS/Linux → Windows Compatibility)
+
+**MANDATORY:** All PowerShell files (\*.ps1, \*.psm1, \*.psd1) **MUST** be Windows-compatible when created or modified on macOS/Linux systems.
+
+### Core Requirements
+
+- **Line Endings:** Use CRLF (`\r\n`, Windows-style), NOT LF (`\n`, Unix-style).
+- **Encoding:** UTF-8 without BOM (Byte Order Mark) is preferred; UTF-8 with BOM is acceptable.
+- **Path Separators:** Must use backslash (`\`) for hardcoded Windows paths; avoid forward slash (`/`) in hardcoded paths. (Use `Join-Path` instead; see "Path Construction Details".)
+- **File Permissions:** Ensure no executable bit (`+x`) is set on `.ps1` files (not applicable to Windows execution, but prevents confusion).
+- **EOL and BOM Detection:** In VS Code, verify the status bar (bottom right) shows `CRLF` and `UTF-8` (not `UTF-8 with BOM` unless required).
+
+### Rationale
+
+PowerShell scripts execute on Windows servers and require **strict Windows file format** for proper execution in automated orchestration (DSC, Desired State Configuration; Group Policy startup/shutdown scripts; CI/CD pipelines; remote PowerShell execution via WinRM).
+
+### Enforcement for AI Agents
+
+**If you are an AI agent running on macOS or Linux:**
+
+1. **After generating or modifying a PowerShell file**, explicitly convert line endings to CRLF before finalizing the response or saving the file.
+2. **Do not assume** the consumer's system will auto-convert. You are responsible.
+3. **If you attempt to detect or fix issues** (e.g., running `dos2unix`, `unix2dos`, or similar commands):
+   - **Check your current operating system first** using `$PSVersionTable.Platform` or equivalent platform-detection in your script.
+   - **If running on Windows:** Stop immediately. The governance rule should have already been applied by the macOS/Linux agent that created the file. Do not re-process.
+   - **If running on macOS/Linux:** Proceed with conversion using platform-appropriate tools.
+
+**If you are an AI agent running on Windows:**
+
+- You must still conform to CRLF and UTF-8 encoding, but the file system will typically enforce this automatically.
+- Do not run Unix-style line-ending conversion tools. If the file already has CRLF, leave it as-is.
+- If you encounter a PowerShell file with LF line endings on a Windows system, this indicates the file was created by a non-compliant macOS/Linux agent and should be rejected or escalated for re-generation on the correct platform.
+
+### Detection in VS Code
+
+- Status bar (bottom right) shows `CRLF` for line endings and `UTF-8` for encoding.
+- If it shows `LF`, click on the status bar and select "CRLF" to convert.
+- Save the file after conversion.
+
 ## Logging and Messaging
 
 - **Primary Logging:** Use `Write-Verbose` for all diagnostic, status, and debugging messages. This allows logging to be toggled on/off via `-Verbose`.
