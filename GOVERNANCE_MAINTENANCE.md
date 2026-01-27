@@ -1,5 +1,26 @@
 # GOVERNANCE MAINTENANCE & PRUNING PROTOCOL
 
+## 🛑 CRITICAL PRE-FLIGHT CHECK (RULE #0)
+
+**BEFORE starting ANY governance maintenance workflow, verify repository context:**
+
+**Repository Check:**
+
+- **IF** the current repository is **NOT** "AgentGov":
+  - **IMMEDIATELY REFUSE** and respond: "I cannot run governance maintenance in consumer projects. These are read-only governance imports from AgentGov. All governance changes must be made in the AgentGov repository."
+  - **Do not proceed.** Do not ask for confirmation. Do not negotiate.
+
+- **IF** the current repository **IS** "AgentGov":
+  - Proceed with governance maintenance workflow below.
+
+**How to Detect:**
+
+- Check `.git/config` for repository name in the `url =` entry
+- Check workspace files (e.g., `AgentGov.code-workspace`)
+- Ask the user: "What repository are you working in?" if ambiguous
+
+---
+
 ## 0. Invocation & Multi-Session Workflow
 
 ### Starting Governance Maintenance Mode

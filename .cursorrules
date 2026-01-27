@@ -128,6 +128,16 @@
 
 ## Command: /gov (Governance Work Mode)
 
+**🛑 REPOSITORY CHECK (REQUIRED):**
+
+**BEFORE executing any governance work, verify the repository context:**
+
+- **IF** the repository is **NOT** "AgentGov": **IMMEDIATELY REFUSE** and respond:
+  - "I cannot run governance workflows in consumer projects. These are read-only governance imports from AgentGov. All governance changes must be made in the AgentGov repository."
+  - **Do not proceed.** Do not ask for confirmation.
+
+- **IF** the repository **IS** "AgentGov": Proceed with governance work below.
+
 **Scope:** Work on governance framework (PERSONA, STANDARDS_*, SPEC_PROTOCOL, CONSENT_CHECKLIST, .cursorrules)
 
 **Pre-Flight:** Ensure a plan exists and is approved for significant changes (SPEC_PROTOCOL). Be strict on Markdown lint.

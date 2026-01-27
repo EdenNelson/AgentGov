@@ -19,7 +19,7 @@ The risk: Governance drift in consumer projects, loss of consistency, and uninte
 Implement **Rule #0 (Governance Immutability Rule)** — a critical guard rule that:
 
 1. **Detects repository context** at the start of every session (checks `.git/config`, workspace files, or asks the user)
-2. **Refuses ALL governance file modifications** unless the repository is "AgentGov"
+2. **Refuses ALL governance file modifications AND workflow execution** unless the repository is "AgentGov"
 3. **Provides a non-negotiable response** with clear explanation and reference to the canonical location
 4. **Allows normal governance work in AgentGov** (subject to existing Spec Protocol and Consent rules)
 
@@ -27,15 +27,22 @@ Implement **Rule #0 (Governance Immutability Rule)** — a critical guard rule t
 
 #### .cursorrules
 
-- Added as the first section (Rule #0)
+- Added as the first section (Rule #0) for file protection
 - Placed before all other governance loading rules
 - Includes detection logic, blocked examples, and allowed examples
+- `/gov` command now includes mandatory repository check before execution
 
 #### PERSONA.md
 
 - Added as first behavioral guideline
 - Ensures the rule loads with the default persona
 - Marked with 🛑 for visibility
+
+#### GOVERNANCE_MAINTENANCE.md
+
+- Added Rule #0 pre-flight check at the top
+- Blocks all governance maintenance workflows in consumer projects
+- Same detection and refusal logic as file protection
 
 ### Enforcement
 
@@ -44,15 +51,17 @@ The rule is strict and non-negotiable:
 - No "ask user for confirmation" fallback
 - No bypassing with special commands
 - Clear, immediate refusal with explanation
+- Applies to both file edits AND workflow commands (`/gov`, governance maintenance)
 
 ## Consequences
 
 ### Positive
 
 - **Prevents accidental governance drift:** Consumer projects cannot be modified to contradict AgentGov canonical rules
-- **Single source of truth:** All governance changes must happen in AgentGov and be re-imported
+- **Blocks governance workflow execution:** Consumer projects cannot run governance maintenance, `/gov` commands, or other governance procedures
+- **Single source of truth:** All governance changes and maintenance must happen in AgentGov and be re-imported
 - **Safety:** Reduces risk of unintended rule conflicts across the distributed ecosystem
-- **Transparency:** Consumer projects immediately understand why a governance change is refused
+- **Transparency:** Consumer projects immediately understand why a governance change or workflow is refused
 
 ### Negative
 
