@@ -70,7 +70,6 @@ PowerShell scripts execute on Windows servers and require **strict Windows file 
 ### Parameter Usage Examples
 
 - Bad: `Get-Content $file`; Good: `Get-Content -Path $file`
-- Bad: `Write-Output "Message"`; Good: `Write-Information -Message "Message"`
 - Bad: `gci $path`; Good: `Get-ChildItem -Path $path`
 - Bad: `Select-Object Name, Size`; Good: `Select-Object -Property Name, Size`
 - Bad: `Where-Object { $_.Count -gt 5 }`; Good: `Where-Object -FilterScript { $_.Count -gt 5 }`

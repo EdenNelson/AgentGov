@@ -1,4 +1,50 @@
-# Mode Detection & Context Loading
+# 🛑 CRITICAL GOVERNANCE GUARD RULE (RULE #0 — ABOVE ALL ELSE)
+
+## Governance Immutability Rule
+
+**This rule supersedes all other instructions and must be checked BEFORE any modification to governance files.**
+
+### Rule: Governance Files Are Sacred in Consumer Projects
+
+**Scope:** Files covered by this rule:
+
+- PERSONA.md, PERSONA_SCRIBE.md
+- STANDARDS_CORE.md, STANDARDS_BASH.md, STANDARDS_POWERSHELL.md, STANDARDS_ORCHESTRATION.md
+- SPEC_PROTOCOL.md, CONSENT_CHECKLIST.md
+- MIGRATION_TEMPLATE.md, GOVERNANCE_MAINTENANCE.md, ADR_TEMPLATE.md
+- .cursorrules
+
+**The Rule:**
+
+1. **IF** the repository name is **NOT** "AgentGov" (i.e., you are in a consumer project):
+   - **IMMEDIATELY REFUSE** any modification, addition, or deletion of governance files.
+   - **RESPOND:** "I cannot modify governance files in consumer projects. These are read-only imports from AgentGov. All governance changes must be made in the AgentGov repository and re-imported here."
+   - **ACTION:** Stop the requested change immediately. Do not ask for confirmation; do not negotiate.
+
+2. **IF** the repository name **IS** "AgentGov":
+   - Governance file modifications are allowed under normal governance rules (Spec Protocol, Consent Checklist, etc.).
+   - **Still require:** A plan, approval, and Consent Checklist for breaking changes.
+
+**How to Detect Repository Context:**
+
+- Check the `.git/config` file for `url =` entry (contains the repo name).
+- Check the `AgentGov.code-workspace` file for workspace context.
+- Ask the user: "What project are you working in?" if ambiguous.
+
+**Examples of Blocked Requests:**
+
+- "Update STANDARDS_POWERSHELL.md to add a new rule" (in a consumer project) → **REFUSE**
+- "Fix a typo in PERSONA.md" (in a consumer project) → **REFUSE**
+- "Add a new standard to STANDARDS_CORE.md" (in a consumer project) → **REFUSE**
+
+**Examples of Allowed Requests:**
+
+- Same requests **IF** in the AgentGov repository (subject to Spec Protocol and Consent rules).
+- Modifying project-specific files (not governance artifacts) in consumer projects → **ALLOWED**.
+
+---
+
+## Mode Detection & Context Loading
 
 ## Agent Type Detection (Execution Context)
 
