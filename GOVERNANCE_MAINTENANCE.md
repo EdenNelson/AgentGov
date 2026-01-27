@@ -1,5 +1,33 @@
 # GOVERNANCE MAINTENANCE & PRUNING PROTOCOL
 
+## 0. Invocation & Multi-Session Workflow
+
+### Starting Governance Maintenance Mode
+
+To begin a governance maintenance cycle, invoke with:
+```
+Please start governance maintenance mode: scan all governance rules and produce an ADR-0001 format suspect list.
+```
+
+This triggers **Session 1** of a four-session workflow documented in `.github/adr/README.md`.
+
+**Expected Output:** An ADR in `.github/adr/` with status `Proposed` containing a suspect list of problematic rules.
+
+### Multi-Session Handoff
+
+Each session reads the ADR from the previous session and appends its findings:
+
+| Session | Input | Process | Output | ADR Update |
+| --- | --- | --- | --- | --- |
+| 1 | Governance files | Scan rules | Suspect list | Create ADR, status `Proposed` |
+| 2 | ADR #NNNN | Design probe test | Test plan | Add `Test Plan` section |
+| 3 | ADR #NNNN + probe | Execute test & refactor | Baseline + post-change results | Add `Execution Notes` section |
+| 4 | ADR #NNNN + results | Validate & integrate | Final decision + governance update | Update status to `Accepted` or `Rejected` |
+
+See `.github/adr/README.md` for full details.
+
+---
+
 ## 1. Principle: "Chesterton's Fence"
 
 Do not remove a rule until you understand why it was put there. Do not remove a rule until you can prove the system maintains the behavior without it.

@@ -1,0 +1,87 @@
+# Session 1: Governance Maintenance Scan & Suspect List Generation
+
+## Objective
+
+Scan all governance rules in the repository and produce an ADR-0001 style suspect list identifying rules that are (a) invalid, (b) superseded, (c) conflicting, or (d) token-wasting.
+
+## Context
+
+This is **Session 1 of a four-session governance maintenance workflow** documented in:
+- [.github/adr/README.md](.github/adr/README.md) — ADR workflow overview
+- [GOVERNANCE_MAINTENANCE.md](../GOVERNANCE_MAINTENANCE.md) — Multi-session governance process
+- [ADR-0001](.github/adr/0001-establish-governance-adr-workflow.md) — Master plan
+
+## Input
+
+All governance and standards files in the repository:
+- `STANDARDS_CORE.md`
+- `STANDARDS_ORCHESTRATION.md`
+- `STANDARDS_BASH.md`
+- `STANDARDS_POWERSHELL.md`
+- `GOVERNANCE_MAINTENANCE.md`
+- `.cursorrules`
+- `PERSONA.md` and `PERSONA_SCRIBE.md`
+- `CONSENT_CHECKLIST.md`
+- `SPEC_PROTOCOL.md`
+- Any other governance-related files
+
+## Process
+
+1. **Scan all governance files** for rules and guidance that fall into these categories:
+   - **Invalid:** Rules that refer to non-existent patterns, outdated frameworks, or impossible conditions
+   - **Superseded:** Rules that overlap or are covered by other rules (deduplication opportunity)
+   - **Conflicting:** Two or more rules that contradict each other
+   - **Token Waste:** Rules that are overly verbose, redundant, or could be compressed without losing meaning
+
+2. **Build a suspect list** with the following information for each candidate rule:
+   - Rule/Section identifier (e.g., "STANDARDS_CORE.md §2.1")
+   - Category (Invalid / Superseded / Conflicting / Token Waste)
+   - Brief rationale (1-2 sentences)
+
+3. **Create an ADR document** in `.github/adr/` with:
+   - **Filename:** `0002-<rule-area>-governance-review.md` (e.g., `0002-standards-core-governance-review.md`)
+   - **Status:** `Proposed`
+   - **Date:** Today's date (YYYY-MM-DD)
+   - **Context:** Briefly describe the governance maintenance initiative
+   - **Decision:** "Conduct governance review of [specific area] to identify problematic rules"
+   - **Suspect List:** Table with Rule, Category, Rationale columns (see ADR_TEMPLATE.md for format)
+
+## Output
+
+A new ADR file in `.github/adr/` containing:
+- ADR header with Status `Proposed`
+- A Suspect List section with all identified problematic rules
+- Each row documents a specific rule with its category and rationale
+
+## Hand-Off to Session 2
+
+Once this ADR is created and approved by the user:
+1. User selects one suspect rule from the Suspect List
+2. Session 2 agent takes ADR number and selected rule
+3. Session 2 designs a "Probe" test per [GOVERNANCE_MAINTENANCE.md](../GOVERNANCE_MAINTENANCE.md) Step 2
+
+## Stop Sequence
+
+**CRITICAL:** After generating the ADR document:
+1. Create the file
+2. **STOP GENERATING IMMEDIATELY**
+3. Do not proceed to Session 2
+4. Do not make any further changes to governance files
+5. Wait for user approval before proceeding
+
+This enforces the SPEC_PROTOCOL hard gate between thinking (planning) and coding (implementation).
+
+## Constraints
+
+- **Do not alter governance files** — only create the ADR artifact
+- **Do not proceed beyond suspect identification** — Session 2 will handle test planning
+- **Protected files:** Do not modify STANDARDS_*.md, .cursorrules, or persona files
+- **Preserve decision trail:** Reference this prompt and the master plan (ADR-0001) in the new ADR's context section
+
+## Success Criteria
+
+- ✓ New ADR created in `.github/adr/` with sequential numbering
+- ✓ Status set to `Proposed`
+- ✓ Suspect List includes at least 3 identified rules with clear categories and rationales
+- ✓ No governance files were modified
+- ✓ User has been asked for approval before Session 2 proceeds

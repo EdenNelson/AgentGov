@@ -57,6 +57,28 @@
 - Check dependencies and hidden constraints
 - Validate assumptions before coding
 
+### 1.5 Scribe Artifacts (Pre-Planning Analysis)
+
+**Definition:** A **scribe** is a pre-planning analysis document that captures thinking before a formal plan is drafted.
+
+**Purpose:** Scribes answer:
+- What is the problem being analyzed?
+- What gap or gap exists in current governance/architecture?
+- What is the user's intent?
+- What constraints apply?
+- What are success criteria?
+
+**Naming Convention:** `scribe-<YYYYMMDD>-<topic>.md` (e.g., `scribe-20260126-governance-maintenance.md`)
+
+**Location:** `.github/prompts/` while active; moved to `.github/prompts/archive/` once superseded by a plan
+
+**Workflow Position:**
+```
+Scribe (Analysis) → Plan (plan-*.md) → Approval → Coding
+```
+
+**Lifecycle:** Scribes are typically created to explore a problem space, then superseded by a formal plan. Once a plan is approved and implemented (resulting in an accepted ADR), the scribe is archived. The final ADR should reference superseded scribe reports in its "Prior Analysis" section to preserve the decision trail.
+
 ---
 
 ## 2. THE SPEC PROTOCOL WORKFLOW
@@ -158,6 +180,51 @@
 - [ ] No file with lint/compliance errors can be marked "complete"
 - [ ] Advance to next stage only after validation passes
 - [ ] Document any quality issues discovered and how they were resolved
+
+### 2.4 Scribe-Plan Ingestion & Architect Analysis
+
+**Purpose:** Define how Scribe-captured requirements flow to Architect analysis, ensuring problem classification authority rests with the Architect, not the Scribe.
+
+#### Phase 1: Intake & Classification
+
+When receiving N `scribe-plan-*.md` files from Scribe intake:
+
+1. **Read all scribe-plan files** in the intake batch
+2. **Analyze the actual codebase** for root causes
+3. **Reclassify problems** as needed:
+   - **Combine:** "Scribe files X and Y describe one root cause"
+   - **Split:** "Scribe file Z contains three separate problems"
+   - **Reframe:** "Scribe perceived problem as X; actual problem is Y"
+4. **Document the mapping:**
+
+```text
+Scribe Input → Architect Classification
+scribe-plan-A.md → Problem #1 (root cause analysis)
+scribe-plan-B.md, scribe-plan-C.md → Problem #2 (combined; same root)
+scribe-plan-D.md → Problems #3a, #3b (split; different roots)
+```
+
+#### Phase 2: Delivery
+
+Create **one standard plan file** (`plan-*.md`) with:
+
+- **Architect's problem classification** (not Scribe's)
+- **Mapping** showing how scribe-plans were regrouped and why
+- **Root cause analysis** per problem
+- **Interdependencies & sequencing** of fixes
+- **Implementation roadmap** reflecting Architect's technical judgment
+
+#### Authority Boundary
+
+- **Scribe authority:** Capture user intent accurately
+- **Architect authority:** Determine actual problems and how to solve them
+- **Scribe does NOT dictate:** Problem count, root causes, or solution grouping
+
+#### Success Criteria
+
+- Architect's classification is **traceable back to scribe-plans** (audit trail)
+- If Architect regroups/splits, **rationale is documented**
+- Standard plan **reflects Architect's technical judgment**, not Scribe's structure
 
 ---
 
