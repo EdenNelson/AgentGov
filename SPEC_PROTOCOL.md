@@ -226,6 +226,22 @@ Create **one standard plan file** (`plan-*.md`) with:
 - If Architect regroups/splits, **rationale is documented**
 - Standard plan **reflects Architect's technical judgment**, not Scribe's structure
 
+### 2.5 Persona Activation & Mode Switching
+
+**Principle:** Scribe and Architect personas are mutually exclusive. Sessions default to Architect unless `/scribe` is explicitly invoked. If `/scribe` is invoked, the session remains Scribe until explicitly exited; otherwise it remains Architect.
+
+**Rules:**
+
+- Default mode: Architect (PERSONA.md)
+- Scribe mode is entered only when the user types `/scribe` or explicitly requests intake; Scribe stays active until the intake loop ends and the user exits
+- When reviewing scribe-plan files per §2.4, activate Architect only; Scribe Prime Directives do not apply
+- Persona activation is explicit; personas are not chain-loaded
+
+**Context Verification:**
+
+- Use the context verification command (see .cursorrules) to report currently loaded governance files: PERSONA or PERSONA_SCRIBE, SPEC_PROTOCOL, STANDARDS_*
+- If .cursorrules was not auto-loaded (e.g., workspace load issue), manually load .cursorrules then re-run context verification
+
 ---
 
 ## 3. PLAN PROMPT STRUCTURE

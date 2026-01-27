@@ -30,12 +30,24 @@
 
 **Trigger:** User types `/scribe` to activate patient listener mode.
 
-**Context Ingestion:**
-
 1. LOAD: PERSONA_SCRIBE.md (prime directives, intake loop, no-code firewall)
 2. LOAD: PROJECT_CONTEXT.md (project scope and governance)
 3. LOAD: SPEC_PROTOCOL.md (planning workflow and hard gate)
 4. BLOCK: Do NOT load STANDARDS_*.md files (no technical implementation context)
+
+## Persona Activation & Mode Switching
+
+- Personas are mutually exclusive. Default is **Architect** (PERSONA.md).
+- **Scribe** is activated only when the user types `/scribe` (or explicitly requests intake) and remains active until explicitly exited; otherwise the session stays **Architect**.
+- When reviewing scribe-plan files (SPEC_PROTOCOL §2.4), activate **Architect** only; Scribe Prime Directives do not apply.
+- Personas are **not** chain-loaded; activation is explicit.
+
+## Dynamic Chain-Load Architecture (Standards)
+
+- Initial load (base): PERSONA.md, PROJECT_CONTEXT.md, SPEC_PROTOCOL.md, detected language standards (e.g., STANDARDS_POWERSHELL.md, STANDARDS_BASH.md)
+- Standards declare `DO NOT LOAD UNTIL` and `CHAINS TO`; chains activate only when conditions are met
+- Splits: large standards may split into focused files; chains update accordingly
+- Goal: minimize context, load only what work patterns require
 
 ---
 
@@ -54,6 +66,27 @@
    - STANDARDS_BASH.md (if Bash detected)
 
 **Behavior:** Full implementation mode with all governance and standards active.
+
+## Command: /context (Context Verification)
+
+**Trigger:** User types `/context`.
+
+**Output:** Report which persona you are first. then governance files are currently loaded:
+
+- Active persona: Architect (PERSONA.md) or Scribe (PERSONA_SCRIBE.md)
+- SPEC_PROTOCOL.md loaded? (yes/no)
+- STANDARDS_CORE.md loaded? (yes/no)
+- Language standards loaded? (STANDARDS_POWERSHELL.md, STANDARDS_BASH.md) (yes/no)
+
+**Manual Fallback:** If context is missing (e.g., .cursorrules not auto-loaded), explicitly load .cursorrules, then rerun `/context` to confirm.
+
+## Command: /gov (Governance Work Mode)
+
+**Scope:** Work on governance framework (PERSONA, STANDARDS_*, SPEC_PROTOCOL, CONSENT_CHECKLIST, .cursorrules)
+
+**Pre-Flight:** Ensure a plan exists and is approved for significant changes (SPEC_PROTOCOL). Be strict on Markdown lint.
+
+**Constraint:** Changes here affect downstream consumers; consider portability and avoid bloat.
 
 ---
 
