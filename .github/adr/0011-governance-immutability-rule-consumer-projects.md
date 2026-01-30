@@ -10,7 +10,7 @@ Accepted
 
 ## Context
 
-During recent work, accidental governance updates were made to a consumer project that consumes AgentGov's canonical governance files. These files (PERSONA.md, STANDARDS_*.md, SPEC_PROTOCOL.md, CONSENT_CHECKLIST.md, .cursorrules, etc.) are canonical and should **only** be modified in the AgentGov repository. Consumer projects should treat them as read-only imports.
+During recent work, accidental governance updates were made to a consumer project that consumes AgentGov's canonical governance files. These files (PERSONA.md, STANDARDS_*.md, SPEC_PROTOCOL.md, CONSENT_CHECKLIST.md, .github/copilot-instructions.md, etc.) are canonical and should **only** be modified in the AgentGov repository. Consumer projects should treat them as read-only imports.
 
 The risk: Governance drift in consumer projects, loss of consistency, and unintended overrides of canonical rules.
 
@@ -25,7 +25,7 @@ Implement **Rule #0 (Governance Immutability Rule)** — a critical guard rule t
 
 ### Implementation
 
-#### .cursorrules
+#### .github/copilot-instructions.md
 
 - Added as the first section (Rule #0) for file protection
 - Placed before all other governance loading rules
@@ -71,7 +71,7 @@ The rule is strict and non-negotiable:
 ### Risks
 
 - **Detection edge cases:** If repository context detection fails, the rule may not activate (mitigated by asking the user as fallback)
-- **Rule versioning:** Consumer projects using older versions of .cursorrules won't have this protection until they update
+- **Rule versioning:** Consumer projects using older versions of .github/copilot-instructions.md won't have this protection until they update
 
 ## Compliance
 

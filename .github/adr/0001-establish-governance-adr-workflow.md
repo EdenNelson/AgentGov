@@ -100,7 +100,7 @@ Scribes are typically replaced by a formal plan artifact; they are archived once
 
 **Process:**
 
-1. Scan all governance files (STANDARDS_*.md, .cursorrules, governance rules)
+1. Scan all governance files (STANDARDS_*.md, .github/copilot-instructions.md, governance rules)
 2. Enumerate suspected problematic rules with rationales:
    - **Invalid:** Rule refers to non-existent patterns or outdated frameworks
    - **Superseded:** Another rule now covers this; deduplication opportunity
@@ -275,7 +275,7 @@ Update [ADR_TEMPLATE.md](../../../ADR_TEMPLATE.md) to support:
 
 ## Constraints & Safeguards
 
-- **No in-place edits:** Governance files (STANDARDS_*.md, .cursorrules) remain unchanged until Phase 4 ADR is `Accepted`
+- **No in-place edits:** Governance files (STANDARDS_*.md, .github/copilot-instructions.md) remain unchanged until Phase 4 ADR is `Accepted`
 - **Protected files:** ADR itself is the only mutable record during Phases 1–3
 - **Immutable baseline:** Suspect list and test plan (Phases 1–2) cannot be altered; new concerns become new ADRs
 - **Living document exception:** Execution Notes and Validation Results may be amended with timestamps if new information emerges (aligned with industry ADR practice)

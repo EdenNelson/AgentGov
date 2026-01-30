@@ -36,7 +36,7 @@ This project maintains these canonical governance files:
 - **STANDARDS_ORCHESTRATION.md**: Consent gates and change management
 - **SPEC_PROTOCOL.md**: Hard gate between architectural planning and implementation
 - **CONSENT_CHECKLIST.md**: User approval gates for breaking changes
-- **.cursorrules**: Dynamic context ingestion and rule loading
+- **.github/copilot-instructions.md**: Dynamic context ingestion and rule loading (formerly .cursorrules)
 
 These files are **canonical** — they evolve in this project and define optimal AI agent behavior. Each new session loads the latest versions, creating a feedback loop where the project continuously improves itself.
 
@@ -44,6 +44,6 @@ These files are **canonical** — they evolve in this project and define optimal
 
 ## References
 
-- Governance chain-loading, commands, and activation live in [.cursorrules](.cursorrules)
+- Governance chain-loading, commands, and activation live in [.github/copilot-instructions.md](.github/copilot-instructions.md)
 - Coding standards: [STANDARDS_CORE.md](STANDARDS_CORE.md), [STANDARDS_POWERSHELL.md](STANDARDS_POWERSHELL.md), [STANDARDS_BASH.md](STANDARDS_BASH.md)
 - Governance protocols: [SPEC_PROTOCOL.md](SPEC_PROTOCOL.md), [STANDARDS_ORCHESTRATION.md](STANDARDS_ORCHESTRATION.md), [CONSENT_CHECKLIST.md](CONSENT_CHECKLIST.md)
