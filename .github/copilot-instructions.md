@@ -94,6 +94,16 @@
 
 ---
 
+## Hybrid Instructions Model (Custom Instructions + Skills)
+
+**Custom Instructions (always loaded):** Keep this file focused on baseline governance, planning gates, and repository context.
+
+**Skills (on-demand):** Specialized personas and standards live under `.github/skills/<skill-name>/SKILL.md` and should be loaded only when relevant.
+
+**During migration:** Canonical root files remain authoritative; skills mirror their content. Prefer the skills when available.
+
+---
+
 ## Mode Detection & Context Loading
 
 ## Agent Type Detection (Execution Context)
@@ -126,25 +136,26 @@
 
 **Trigger:** User types `/scribe` to activate patient listener mode.
 
-1. LOAD: PERSONA_SCRIBE.md (prime directives, intake loop, no-code firewall)
-2. LOAD: PROJECT_CONTEXT.md (project scope and governance)
-3. LOAD: SPEC_PROTOCOL.md (planning workflow and hard gate)
-4. BLOCK: Do NOT load STANDARDS_*.md files (no technical implementation context)
+1. LOAD: persona-scribe skill (`.github/skills/persona-scribe/SKILL.md`)
+2. CONFIRM: PROJECT_CONTEXT.md and SPEC_PROTOCOL.md are already present via custom instructions
+3. BLOCK: Do NOT load standards skills (no technical implementation context)
 
 ## Persona Activation & Mode Switching
 
-- Personas are mutually exclusive. Default is **Architect** (PERSONA.md).
+- Personas are mutually exclusive. Default is **Architect** (persona-architect skill).
 - **Scribe** is activated only when the user types `/scribe` (or explicitly requests intake) and remains active until explicitly exited; otherwise the session stays **Architect**.
 - When reviewing scribe-plan files (SPEC_PROTOCOL §2.4), activate **Architect** only; Scribe Prime Directives do not apply.
 - Personas are **not** chain-loaded; activation is explicit.
 
-## Dynamic Chain-Load Architecture (Standards)
+## Skill Activation (Standards)
 
-- Initial load (base): PERSONA.md, PROJECT_CONTEXT.md, SPEC_PROTOCOL.md, detected language standards (e.g., STANDARDS_POWERSHELL.md, STANDARDS_BASH.md)
-- Language standards load based on verified file presence using file_search (`**/*.ps1`, `**/*.sh`, `**/*.py`)
-- Standards declare `DO NOT LOAD UNTIL` and `CHAINS TO`; chains activate only when conditions are met
-- Splits: large standards may split into focused files; chains update accordingly
-- Goal: minimize context, load only what work patterns require
+- Baseline custom instructions cover governance guard, PROJECT_CONTEXT, SPEC_PROTOCOL, and STANDARDS_CORE.
+- Load standards skills only when relevant:
+   - `standards-powershell` for `.ps1`, `.psm1`, `.psd1` work
+   - `standards-bash` for `.sh` work
+   - `standards-orchestration` for consent gates, breaking changes, or migrations
+- Skills are not chain-loaded; activation is explicit and context-driven.
+- Goal: minimize context while ensuring required standards are active.
 
 ---
 
@@ -154,13 +165,11 @@
 
 **Context Ingestion:**
 
-1. LOAD: PERSONA.md (identity, working relationship, execution protocol)
-2. LOAD: PROJECT_CONTEXT.md (project scope)
-3. LOAD: SPEC_PROTOCOL.md (planning workflow)
-4. LOAD: STANDARDS_CORE.md (universal principles)
-5. LOAD: Language standards conditionally based on verified file presence:
-   - STANDARDS_POWERSHELL.md (if PowerShell files detected via file_search)
-   - STANDARDS_BASH.md (if Bash files detected via file_search)
+1. LOAD: persona-architect skill (identity, working relationship, execution protocol)
+2. CONFIRM: PROJECT_CONTEXT.md, SPEC_PROTOCOL.md, and STANDARDS_CORE.md are already present via custom instructions
+3. LOAD: Language standards skills conditionally based on verified file presence:
+   - standards-powershell (if PowerShell files detected via file_search)
+   - standards-bash (if Bash files detected via file_search)
 
 **Behavior:** Full implementation mode with all governance and standards active.
 
@@ -174,14 +183,13 @@
    - PowerShell: `**/*.ps1`, `**/*.psm1`, `**/*.psd1`
    - Bash: `**/*.sh`
    - Python: `**/*.py`
-2. **Report Findings:** Report which persona you are first, then governance files are currently loaded:
-   - Active persona: Architect (PERSONA.md) or Scribe (PERSONA_SCRIBE.md)
-   - SPEC_PROTOCOL.md loaded? (yes/no)
-   - STANDARDS_CORE.md loaded? (yes/no)
-   - Language standards detected and loaded:
-     - PowerShell: ✓ Detected (N files) / ✗ Not detected
-     - Bash: ✓ Detected (N files) / ✗ Not detected
-     - Python: ✓ Detected (N files) / ✗ Not detected
+2. **Report Findings:** Report which persona you are first, then which baseline instructions and skills are active:
+    - Active persona: Architect (persona-architect skill) or Scribe (persona-scribe skill)
+    - Baseline custom instructions present? (SPEC_PROTOCOL, STANDARDS_CORE, PROJECT_CONTEXT)
+    - Language standards skills detected and loaded:
+       - PowerShell: ✓ Detected (N files) / ✗ Not detected
+       - Bash: ✓ Detected (N files) / ✗ Not detected
+       - Python: ✓ Detected (N files) / ✗ Not detected
 3. **Transparent Assumptions:** If language standards are loaded without code presence (e.g., for governance review), state: "STANDARDS_[LANG].md loaded for governance context; no code files detected."
 
 **Manual Fallback:** If context is missing (e.g., .github/copilot-instructions.md not auto-loaded), explicitly load .github/copilot-instructions.md, then rerun `/context` to confirm.
