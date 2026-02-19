@@ -11,7 +11,7 @@ Use this checklist before implementing any change that may alter end-user usage 
 
 ### Pre-Change Analysis (Required Before Approval)
 
-Before requesting approval, the agent must create a persisted plan. See [SPEC_PROTOCOL.md](SPEC_PROTOCOL.md).
+Before requesting approval, the agent must create a persisted plan. See spec-protocol.instructions.md.
 
 - [ ] **Plan created and persisted:**
   - [ ] Plan exists in `.github/prompts/plan-<YYYYMMDD>-<topic>.prompt.md`
@@ -33,7 +33,7 @@ Before requesting approval, the agent must create a persisted plan. See [SPEC_PR
 
 - [ ] **Explicit approval received in this session**
   - [ ] User confirms: "Yes, proceed with this plan"
-  - [ ] Sign-off recorded in plan: `Approved by USERNAME on DATE`
+  - [ ] Sign-off recorded in plan: `Approved by Eden Nelson on YYYY-MM-DD` (Example: `Approved by Eden Nelson on 2026-02-18`)
 
 ### Implementation Phase (After Approval)
 
@@ -52,9 +52,9 @@ Before requesting approval, the agent must create a persisted plan. See [SPEC_PR
 
 ### References
 
-- [SPEC_PROTOCOL.md](SPEC_PROTOCOL.md): Complete guidance on the Spec Protocol workflow and plan structure
-- [STANDARDS_ORCHESTRATION.md](STANDARDS_ORCHESTRATION.md): Orchestration rules and non-ephemeral planning requirements
-- [MIGRATION_TEMPLATE.md](MIGRATION_TEMPLATE.md): Template for documenting user-facing changes
+- spec-protocol.instructions.md: Complete guidance on the Spec Protocol workflow and plan structure
+- orchestration.instructions.md: Orchestration rules and non-ephemeral planning requirements
+- .github/skills/templates/SKILL.md: Template for documenting user-facing changes
 
 ## GOVERNANCE MAINTENANCE & PRUNING PROTOCOL
 
