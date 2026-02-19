@@ -53,7 +53,6 @@ if [[ ${#ps_files[@]} -eq 0 ]]; then
   exit 0
 fi
 
-printf '[prep-file] Running PowerShell prep\n' >&2
 if ! output=$(.github/scripts/prep-powershell.sh "${ps_files[@]}" 2>&1); then
   message=$(printf '%s\n' "PreToolUse: PowerShell prep failed." "$output" | jq -Rs .)
   printf '{\n'

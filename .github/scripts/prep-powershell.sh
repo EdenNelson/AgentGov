@@ -83,5 +83,4 @@ if command -v sync &>/dev/null; then
   sync
 fi
 sleep 5
-printf '[prep-powershell] Done\n' >&2
 exit 0
