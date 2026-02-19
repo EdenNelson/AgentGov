@@ -27,7 +27,7 @@ for file in "$@"; do
   esac
 
   has_signature=false
-  if grep -q '^# SIG # Begin signature block$' "$file"; then
+  if grep -qE '^# SIG # Begin signature block[[:space:]]*$' "$file"; then
     has_signature=true
   fi
 
@@ -39,8 +39,8 @@ for file in "$@"; do
 
   awk '
     BEGIN { in_sig = 0; found_start = 0; found_end = 0 }
-    /^# SIG # Begin signature block$/ { in_sig = 1; found_start = 1; next }
-    /^# SIG # End signature block$/ { in_sig = 0; found_end = 1; next }
+    /^# SIG # Begin signature block[[:space:]]*$/ { in_sig = 1; found_start = 1; next }
+    /^# SIG # End signature block[[:space:]]*$/ { in_sig = 0; found_end = 1; next }
     !in_sig { print }
     END {
       if (found_start && !found_end) {
