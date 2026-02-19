@@ -25,8 +25,12 @@ fi
 # Extract file paths from tool input
 files=()
 if [[ "$tool_name" == "multi_replace_string_in_file" ]]; then
-  # Multiple files in replacements array
-  mapfile -t files < <(printf '%s' "$tool_input" | jq -r '.replacements[]?.filePath // empty' | sort -u)
+  # Multiple files in replacements array (portable alternative to mapfile)
+  while IFS= read -r file; do
+    if [[ -n "$file" ]]; then
+      files+=("$file")
+    fi
+  done < <(printf '%s' "$tool_input" | jq -r '.replacements[]?.filePath // empty' | sort -u)
 else
   # Single file
   file=$(printf '%s' "$tool_input" | jq -r '.filePath // empty')
