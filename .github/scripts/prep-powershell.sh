@@ -67,10 +67,6 @@ for file in "$@"; do
       errors=1
       continue
     fi
-    
-    if [[ "$has_signature" == "true" ]]; then
-      printf 'Stripped signature block: %s\n' "$file"
-    fi
   else
     # No changes needed, clean up temp file
     rm -f "$temp_file"
@@ -86,5 +82,6 @@ fi
 if command -v sync &>/dev/null; then
   sync
 fi
-
+sleep 5
+printf '[prep-powershell] Done\n' >&2
 exit 0
