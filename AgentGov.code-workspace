@@ -1,9 +1,13 @@
 {
-	"name": "AgentGov",
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../Sync-AgentGov"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"powershell.cwd": "Sync-AgentGov"
+	}
 }

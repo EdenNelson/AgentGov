@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": ".github/scripts/validate-file.sh",
+        "timeout": 30,
+        "cwd": ".",
+        "env": {
+          "VALIDATION_MODE": "hook"
+        }
+      }
+    ]
+  }
+}

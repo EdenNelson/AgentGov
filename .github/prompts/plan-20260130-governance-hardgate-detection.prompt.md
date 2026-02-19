@@ -136,20 +136,20 @@ This plan implements the structural enforcement that makes governance portable a
 
 ## Implementation Log
 
-**Stage 1: Create ADR-0015** ✅
+**Stage 1: Create ADR-0015** [COMPLETE]
 - File: `.github/adr/0015-automatic-governance-hardgate-detection.md`
 - Status: Accepted
 - Lint validation: PASS
 - Checkpoint: Complete
 
-**Stage 2: Update `.github/copilot-instructions.md`** ✅
+**Stage 2: Update `.github/copilot-instructions.md`** [COMPLETE]
 - Location: New section "Automatic Governance Hard Gate Detection" inserted after "Governance Immutability Rule"
 - Content: File list, Thinking Phase, Coding Phase, No Exemptions section
 - Governance file list verified against PROJECT_CONTEXT.md: MATCH
 - Lint validation: PASS
 - Checkpoint: Complete
 
-**Stage 3: Validation** ✅
+**Stage 3: Validation** [COMPLETE]
 - Syntax errors: None
 - Governance file list completeness: Complete (all files from PROJECT_CONTEXT.md included)
 - References to SPEC_PROTOCOL sections: Verified (§ 2.1–2.3)

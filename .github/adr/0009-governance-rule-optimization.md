@@ -63,13 +63,13 @@ Restructure the governance maintenance workflow from **batch processing** (multi
 
 ## Implementation Status
 
-✅ **Completed:**
+[COMPLETE] **Completed:**
 - Updated GOVERNANCE_MAINTENANCE.md with new workflow structure
 - Updated .github/adr/README.md governance ADR table
 - Updated ADR_TEMPLATE.md to enforce one-rule-per-ADR pattern
 - Documented pattern with example ADR-0005 (originally batch, now restructured as example)
 
-✅ **Ready for Testing:**
+[COMPLETE] **Ready for Testing:**
 - Governance workflow ready to be invoked in new session
 - Expected result: Multiple focused ADRs (one per suspect rule) instead of single batch ADR
 

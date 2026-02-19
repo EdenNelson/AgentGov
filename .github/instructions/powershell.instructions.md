@@ -1,17 +1,15 @@
 ---
-name: standards-powershell
-description: PowerShell coding standards and automation rules.
+name: 'PowerShell Standards'
+description: 'Coding conventions and standards for PowerShell scripts and modules'
+applyTo: '**/*.ps1,**/*.psm1,**/*.psd1'
 ---
-
-This skill mirrors STANDARDS_POWERSHELL.md. Keep this content in sync with the canonical file.
-
 # AI Coding Standards
 
 Authoritative rules for AI-generated changes in this repository. Apply these instructions as primary constraints for all automation, code generation, and edits.
 
 ## Scope
 
-- Applies to PowerShell scripts/modules (*.ps1, *.psm1, *.psd1) and related Markdown guidance produced by AI.
+- Applies to PowerShell scripts/modules (\*.ps1, \*.psm1, \*.psd1) and related Markdown guidance produced by AI.
 - Inherit and respect existing project standards documented in PROJECT_CONTEXT.md and Powershell.instructions.md.
 
 ## General Principles
@@ -22,7 +20,7 @@ Authoritative rules for AI-generated changes in this repository. Apply these ins
 
 ## File Encoding and Line Endings (CRITICAL — Idempotency by Default)
 
-**DEFAULT:** PowerShell files (*.ps1, *.psm1, *.psd1) **must use LF** (`\n`) to preserve cross-platform idempotency.
+**DEFAULT:** PowerShell files (\*.ps1, \*.psm1, \*.psd1) **must use LF** (`\n`) to preserve cross-platform idempotency.
 
 **CRLF is required only when explicitly stated or when legacy Windows PowerShell 5.1 compatibility is required** (e.g., Group Policy startup/shutdown scripts, DSC).
 
@@ -93,8 +91,8 @@ PowerShell 7+ handles both LF and CRLF across platforms. **Idempotency by defaul
 
 ### Path Construction Details
 
-- Always use `Join-Path` for building file paths; never use string concatenation (`"$dir\\$file"` or `"$dir/$file"`).
-- Use `-ChildPath` explicitly: `Join-Path -Path $base -ChildPath "subfolder\\file.ps1"`
+- Always use `Join-Path` for building file paths; never use string concatenation (`"$dir\$file"` or `"$dir/$file"`).
+- Use `-ChildPath` explicitly: `Join-Path -Path $base -ChildPath "subfolder\file.ps1"`
 - Use `Join-Path` in command parameters: `Get-ChildItem -Path (Join-Path -Path $dir -ChildPath $childdir) -Filter "*.ps1"`
 - Reason: `Join-Path` handles path separators correctly across platforms (Windows `\`, Unix `/`) and prevents cross-platform failures.
 
@@ -108,7 +106,7 @@ PowerShell 7+ handles both LF and CRLF across platforms. **Idempotency by defaul
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $false)]
-    [string]$OutputPath = ".\\default\\"
+    [string]$OutputPath = ".\default\"
 )
 ```
 

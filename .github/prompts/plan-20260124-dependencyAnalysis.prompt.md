@@ -24,7 +24,7 @@ Analysis of all governance files reveals **8 critical hard references** that for
 - Impact: **BREAKS chain-load model** — Forces these 4 files to load when SPEC_PROTOCOL.md loads
 - Current Behavior: Reader encounters references; agent must ingest referenced files to understand context
 - Chain-Load Conflict: SPEC_PROTOCOL.md is TIER 0 (always load), but shouldn't force TIER 2 files (governance phase-specific)
-- Status: ⚠️ **CRITICAL** — Needs remediation
+- Status: [WARNING] **CRITICAL** — Needs remediation
 
 **Remediation Approach:**
 - Convert hard references (`See CONSENT_CHECKLIST.md`) to chain metadata (`CHAINS TO: CONSENT_CHECKLIST.md when breaking change detected`)
@@ -39,7 +39,7 @@ Analysis of all governance files reveals **8 critical hard references** that for
 - Impact: **BREAKS chain-load model** — Forces CONSENT_CHECKLIST.md to load prematurely
 - Current Behavior: "See CONSENT_CHECKLIST.md for a ready-to-use prompt" forces file load
 - Chain-Load Conflict: STANDARDS_ORCHESTRATION.md is TIER 2 (governance phase), but shouldn't force CONSENT_CHECKLIST.md to pre-load
-- Status: ⚠️ **HIGH** — Needs remediation
+- Status: [WARNING] **HIGH** — Needs remediation
 
 **Remediation Approach:**
 - Convert to: "When breaking change is proposed, CONSENT_CHECKLIST.md chains automatically"
@@ -55,7 +55,7 @@ Analysis of all governance files reveals **8 critical hard references** that for
 - Current Behavior: CONSENT_CHECKLIST.md is only referenced by other files; no independent entry point
 - Chain-Load Conflict: File cannot be loaded without triggering SPEC_PROTOCOL.md again (circular load)
 - Orphaned Status: No work phase triggers this file directly
-- Status: ⚠️ **CRITICAL** — Needs remediation + explicit trigger definition
+- Status: [WARNING] **CRITICAL** — Needs remediation + explicit trigger definition
 
 **Remediation Approach:**
 - Define DO NOT LOAD UNTIL: `breaking_change_proposed`
@@ -68,9 +68,9 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 **Hard References:**
 - References: None detected
-- Impact: ✅ **CLEAN** — Can be first loaded without forcing other files
+- Impact: [COMPLETE] **CLEAN** — Can be first loaded without forcing other files
 - Chain-Load Status: Ready for chain-load model as-is
-- Status: ✅ No action needed
+- Status: [COMPLETE] No action needed
 
 ---
 
@@ -78,9 +78,9 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 **Hard References:**
 - References: STANDARDS_CORE.md
-- Impact: ⚠️ **EXPECTED** — Language-specific files should chain to core standards
+- Impact: [WARNING] **EXPECTED** — Language-specific files should chain to core standards
 - Chain-Load Status: Acceptable; expected parent-child relationship
-- Status: ✅ Acceptable; may need metadata for clarity: `CHAINS FROM: STANDARDS_CORE.md (when bash detected)`
+- Status: [COMPLETE] Acceptable; may need metadata for clarity: `CHAINS FROM: STANDARDS_CORE.md (when bash detected)`
 
 ---
 
@@ -88,9 +88,9 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 **Hard References:**
 - References: STANDARDS_CORE.md
-- Impact: ⚠️ **EXPECTED** — Language-specific files should chain to core standards
+- Impact: [WARNING] **EXPECTED** — Language-specific files should chain to core standards
 - Chain-Load Status: Acceptable; expected parent-child relationship
-- Status: ✅ Acceptable; may need metadata for clarity: `CHAINS FROM: STANDARDS_CORE.md (when powershell detected)`
+- Status: [COMPLETE] Acceptable; may need metadata for clarity: `CHAINS FROM: STANDARDS_CORE.md (when powershell detected)`
 
 ---
 
@@ -98,11 +98,11 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 **Hard References:**
 - References: SPEC_PROTOCOL.md
-- Impact: ⚠️ **CREATES CIRCULAR DEPENDENCY** — References SPEC_PROTOCOL.md, which references MIGRATION_TEMPLATE.md
+- Impact: [WARNING] **CREATES CIRCULAR DEPENDENCY** — References SPEC_PROTOCOL.md, which references MIGRATION_TEMPLATE.md
 - Current Behavior: Template file with hard reference to parent governance
 - Chain-Load Conflict: Circular load risk; unclear activation trigger
 - Orphaned Status: No work phase directly triggers this template
-- Status: ⚠️ **MEDIUM** — Needs remediation + trigger definition
+- Status: [WARNING] **MEDIUM** — Needs remediation + trigger definition
 
 **Remediation Approach:**
 - Convert hard reference to: "Used when implementing breaking changes per SPEC_PROTOCOL.md hard gate"
@@ -115,9 +115,9 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 **Hard References:**
 - References: None (foundational)
-- Impact: ✅ **CLEAN** — Foundational file with no outbound references
+- Impact: [COMPLETE] **CLEAN** — Foundational file with no outbound references
 - Chain-Load Status: Ready for chain-load model as-is
-- Status: ✅ No action needed
+- Status: [COMPLETE] No action needed
 
 ---
 
@@ -125,9 +125,9 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 **Hard References:**
 - References: None (foundational)
-- Impact: ✅ **CLEAN** — Foundational file with no outbound references
+- Impact: [COMPLETE] **CLEAN** — Foundational file with no outbound references
 - Chain-Load Status: Ready for chain-load model as-is
-- Status: ✅ No action needed
+- Status: [COMPLETE] No action needed
 
 ---
 
@@ -266,12 +266,12 @@ Remove back-reference from CONSENT_CHECKLIST.md to SPEC_PROTOCOL.md; assume it's
 
 **After Remediation:**
 
-- ✅ No hard references force unintended file loads
-- ✅ All files declare their load conditions explicitly
-- ✅ Circular dependencies eliminated
-- ✅ Orphaned files have clear activation triggers
-- ✅ Chain-load model can function correctly
-- ✅ Token efficiency improves (lazy loading works as designed)
+- [COMPLETE] No hard references force unintended file loads
+- [COMPLETE] All files declare their load conditions explicitly
+- [COMPLETE] Circular dependencies eliminated
+- [COMPLETE] Orphaned files have clear activation triggers
+- [COMPLETE] Chain-load model can function correctly
+- [COMPLETE] Token efficiency improves (lazy loading works as designed)
 
 **Token Savings:**
 - Per-session efficiency gains: 15-25% (files only load when needed)

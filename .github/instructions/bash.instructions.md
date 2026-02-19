@@ -1,3 +1,8 @@
+---
+name: 'Bash Standards'
+description: 'Strict coding standards for Bash shell automation'
+applyTo: '**/*.sh'
+---
 # AI CODING STANDARDS: BASH (STRICT)
 
 **SCOPE:** Applies to *.sh files and shell automation.

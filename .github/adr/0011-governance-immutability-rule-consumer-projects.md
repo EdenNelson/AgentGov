@@ -36,7 +36,7 @@ Implement **Rule #0 (Governance Immutability Rule)** — a critical guard rule t
 
 - Added as first behavioral guideline
 - Ensures the rule loads with the default persona
-- Marked with 🛑 for visibility
+- Marked with [CRITICAL] for visibility
 
 #### GOVERNANCE_MAINTENANCE.md
 

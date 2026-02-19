@@ -128,7 +128,7 @@ If this change was designed using the Spec Protocol, reference the plan artifact
 - **Approval:** Approved by [USER] on [DATE]
 - **Rationale:** [Summary of key decisions made in the plan]
 
-For new architectural changes, create a plan artifact BEFORE implementation (see [SPEC_PROTOCOL.md](SPEC_PROTOCOL.md)).
+For new architectural changes, create a plan artifact BEFORE implementation (see spec-protocol.instructions.md).
 
 ## Steps to Migrate
 

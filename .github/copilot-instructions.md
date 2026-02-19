@@ -1,4 +1,4 @@
-# 🛑 CRITICAL GOVERNANCE GUARD RULE (RULE #0 — ABOVE ALL ELSE)
+# [CRITICAL] GOVERNANCE GUARD RULE (RULE #0 — ABOVE ALL ELSE)
 
 ## Governance Immutability Rule
 
@@ -214,7 +214,7 @@ All governance artifacts must use: **Eden Nelson**
 
 ## Command: /gov (Governance Work Mode)
 
-**🛑 REPOSITORY CHECK (REQUIRED):**
+**[CRITICAL] REPOSITORY CHECK (REQUIRED):**
 
 **BEFORE executing any governance work, verify the repository context:**
 

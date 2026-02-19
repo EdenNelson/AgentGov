@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "files": [
+    ".github/copilot-instructions.md"
+  ],
+  "agents": {
+    "root": ".github/agents"
+  },
+  "instructions": {
+    "root": ".github/instructions"
+  },
+  "skills": {
+    "root": ".github/skills",
+    "exclude": [
+      "internal-governance"
+    ]
+  },
+  "hooks": {
+    "root": ".github/hooks"
+  },
+  "scripts": {
+    "root": ".github/scripts"
+  },
+  "remove": [
+    {
+      "path": "PERSONA.md",
+      "requires": ".github/agents/architect.agent.md"
+    },
+    {
+      "path": "PERSONA_SCRIBE.md",
+      "requires": ".github/agents/scribe.agent.md"
+    },
+    {
+      "path": "SPEC_PROTOCOL.md",
+      "requires": ".github/instructions/spec-protocol.instructions.md"
+    },
+    {
+      "path": "STANDARDS_CORE.md",
+      "requires": ".github/instructions/general-coding.instructions.md"
+    },
+    {
+      "path": "STANDARDS_ORCHESTRATION.md",
+      "requires": ".github/instructions/orchestration.instructions.md"
+    },
+    {
+      "path": "STANDARDS_POWERSHELL.md",
+      "requires": ".github/instructions/powershell.instructions.md"
+    },
+    {
+      "path": "STANDARDS_BASH.md",
+      "requires": ".github/instructions/bash.instructions.md"
+    },
+    {
+      "path": "ADR_TEMPLATE.md",
+      "requires": ".github/skills/templates/SKILL.md"
+    },
+    {
+      "path": "MIGRATION_TEMPLATE.md",
+      "requires": ".github/skills/templates/SKILL.md"
+    },
+    {
+      "path": "CONSENT_CHECKLIST.md",
+      "requires": ".github/skills/internal-governance/SKILL.md"
+    },
+    {
+      "path": "GOVERNANCE_MAINTENANCE.md",
+      "requires": ".github/skills/internal-governance/SKILL.md"
+    },
+    {
+      "path": ".cursorrules",
+      "requires": ".github/copilot-instructions.md"
+    },
+    {
+      "path": ".github/MIGRATION_TO_SKILLS.md",
+      "requires": ".github/copilot-instructions.md"
+    },
+    {
+      "path": ".github/legacy/",
+      "requires": ".github/agents/"
+    }
+  ]
+}

@@ -1,3 +1,8 @@
+---
+name: 'General Coding'
+description: 'Core coding standards, principles, quality assurance, and API orchestration'
+applyTo: '**'
+---
 # AI CODING STANDARDS: CORE & ORCHESTRATION
 
 **AUTHORITY:** These rules are the primary constraints for all automation, code generation, and edits in this repository.
@@ -6,14 +11,14 @@
 
 **INHERITANCE:** Respect existing project standards in PROJECT_CONTEXT.md and Powershell.instructions.md.
 
-**CONSENT:** For any breaking or major change impacting end-user usage, follow the mandatory Consent Gate in STANDARDS_ORCHESTRATION.md and the Spec Protocol in SPEC_PROTOCOL.md before proceeding.
+**CONSENT:** For any breaking or major change impacting end-user usage, follow the mandatory Consent Gate in orchestration.instructions.md and the Spec Protocol in spec-protocol.instructions.md before proceeding.
 
 ## 1. GENERAL PRINCIPLES
 
 ### 1.1 Core Values
 
 - **Priorities:** Correctness, Clarity, and Idempotence > Brevity.
-- **Spec Protocol Requirement:** Significant architectural changes must be written, persisted, and approved before implementation (see SPEC_PROTOCOL.md).
+- **Spec Protocol Requirement:** Significant architectural changes must be written, persisted, and approved before implementation (see spec-protocol.instructions.md).
 - **Idempotency:** All scripts must be re-runnable without side effects (Check → Test → Set pattern).
 - **Preservation:** Do not modify digital signature blocks under any circumstances.
 
@@ -22,20 +27,13 @@
 - **Conciseness:** Keep outputs concise. Do not re-quote large prior sections; link or summarize instead to save context window.
 - **Enforcement:** If rules cannot be satisfied due to missing context, pause and request details.
 
-### 1.3 Markdown Hygiene
-
-All markdown files must follow CommonMark specification. Key requirements:
-
-- Blank line before/after headings and lists
-- Language specified for fenced code blocks
-- Final newline at end of file
-- No emojis (replace with plain text or remove)
-
-### 1.4 File Boundaries (Governance Location)
+### 1.3 File Boundaries (Governance Location)
 
 - Do not place governance rules in PROJECT_CONTEXT.md. That file is project-specific context only.
-- Canonical governance lives in: PERSONA.md / PERSONA_SCRIBE.md, STANDARDS_* files, SPEC_PROTOCOL.md, STANDARDS_ORCHESTRATION.md, CONSENT_CHECKLIST.md, .github/copilot-instructions.md, ADRs.
+- Canonical governance lives in: .github/agents/*.agent.md, .github/instructions/*.instructions.md, .github/skills/*/SKILL.md, .github/copilot-instructions.md, ADRs.
 - PROJECT_CONTEXT.md may link to governance files but must not define rules or workflows.
+
+**NOTE:** Markdown formatting standards are defined in markdown.instructions.md (auto-loads for all *.md files).
 
 ## 2. API & ENDPOINT ORCHESTRATION
 

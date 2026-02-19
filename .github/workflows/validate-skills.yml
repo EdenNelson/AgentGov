@@ -1,0 +1,52 @@
+name: validate-skills
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  skills-frontmatter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate skills frontmatter
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          skill_dir=".github/skills"
+          if [[ ! -d "$skill_dir" ]]; then
+            echo "Skills directory not found: $skill_dir" >&2
+            exit 1
+          fi
+
+          mapfile -t skill_files < <(find "$skill_dir" -type f -name 'SKILL.md' | sort)
+          if [[ "${#skill_files[@]}" -eq 0 ]]; then
+            echo "No SKILL.md files found under $skill_dir" >&2
+            exit 1
+          fi
+
+          for file in "${skill_files[@]}"; do
+            first_line=$(head -n 1 "$file")
+            if [[ "$first_line" != "---" ]]; then
+              echo "Missing YAML frontmatter start in $file" >&2
+              exit 1
+            fi
+
+            end_line=$(awk 'NR>1 && $0=="---" {print NR; exit 0}' "$file" || true)
+            if [[ -z "${end_line:-}" ]]; then
+              echo "Missing YAML frontmatter end in $file" >&2
+              exit 1
+            fi
+
+            name_present=$(awk 'NR>1 && $0=="---" {exit} $0 ~ /^name:[[:space:]]*/ {found=1} END {if (found) print "yes"}' "$file")
+            desc_present=$(awk 'NR>1 && $0=="---" {exit} $0 ~ /^description:[[:space:]]*/ {found=1} END {if (found) print "yes"}' "$file")
+            if [[ "$name_present" != "yes" || "$desc_present" != "yes" ]]; then
+              echo "Missing name or description in frontmatter for $file" >&2
+              exit 1
+            fi
+          done
+
+          echo "Skills frontmatter validation passed."

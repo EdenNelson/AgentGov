@@ -58,7 +58,7 @@ Before requesting approval, the agent must create a persisted plan. See spec-pro
 
 ## GOVERNANCE MAINTENANCE & PRUNING PROTOCOL
 
-## 🛑 CRITICAL PRE-FLIGHT CHECK (RULE #0)
+## [CRITICAL] CRITICAL PRE-FLIGHT CHECK (RULE #0)
 
 **BEFORE starting ANY governance maintenance workflow, verify repository context:**
 

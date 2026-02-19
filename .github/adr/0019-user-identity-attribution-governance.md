@@ -117,10 +117,10 @@ Why: Audit trail clarity and Spec Protocol compliance (explicit state reificatio
 
 ## Compliance
 
-- **Standards:** ✅ Aligns with SPEC_PROTOCOL §1.2 (explicit state reification)
-- **Governance:** ✅ Improves audit trail clarity (internal governance consistency)
-- **User Impact:** ✅ None (applies prospectively; existing approvals grandfathered)
-- **Portability:** ✅ Consumer projects inherit clear decision authority
+- **Standards:** [COMPLETE] Aligns with SPEC_PROTOCOL §1.2 (explicit state reification)
+- **Governance:** [COMPLETE] Improves audit trail clarity (internal governance consistency)
+- **User Impact:** [COMPLETE] None (applies prospectively; existing approvals grandfathered)
+- **Portability:** [COMPLETE] Consumer projects inherit clear decision authority
 
 ---
 
