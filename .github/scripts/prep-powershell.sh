@@ -26,8 +26,9 @@ for file in "$@"; do
       ;;
   esac
 
-  if ! grep -q '^# SIG # Begin signature block$' "$file"; then
-    continue
+  has_signature=false
+  if grep -q '^# SIG # Begin signature block$' "$file"; then
+    has_signature=true
   fi
 
   tmp_file=$(mktemp)
@@ -65,10 +66,16 @@ for file in "$@"; do
     }
   ' "$tmp_file" > "$trim_file"
 
-  mv "$trim_file" "$file"
+  if ! cmp -s "$trim_file" "$file"; then
+    mv "$trim_file" "$file"
+    if [[ "$has_signature" == "true" ]]; then
+      printf 'Stripped signature block: %s\n' "$file"
+    fi
+  else
+    rm -f "$trim_file"
+  fi
   rm -f "$tmp_file"
-  printf 'Stripped signature block: %s\n' "$file"
-  done
+done
 
 if [[ $errors -ne 0 ]]; then
   exit 1
