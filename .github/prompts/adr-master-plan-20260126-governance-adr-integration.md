@@ -76,7 +76,7 @@ Analysis (Scribe) → Plan (plan-*.md) → Approval → Coding
 
 Scribes are typically replaced by a formal plan artifact; they are archived once a plan is approved.
 
-**Update Required:** SPEC_PROTOCOL.md section 2.1 should be updated to document the scribe stage before the thinking phase diagram.
+**Update Required:** .github/instructions/spec-protocol.instructions.md section 2.1 should be updated to document the scribe stage before the thinking phase diagram.
 
 ---
 
@@ -90,7 +90,7 @@ Scribes are typically replaced by a formal plan artifact; they are archived once
 
 **Process:**
 
-1. Scan all governance files (STANDARDS_*.md, .cursorrules, governance rules)
+1. Scan all governance files (.github/instructions/*.instructions.md, .github/copilot-instructions.md, governance rules)
 2. Enumerate suspected problematic rules with rationales:
    - **Invalid:** Rule refers to non-existent patterns or outdated frameworks
    - **Superseded:** Another rule now covers this; deduplication opportunity
@@ -115,7 +115,7 @@ Scribes are typically replaced by a formal plan artifact; they are archived once
 **Process:**
 
 1. Select one suspect rule from Phase 1 ADR
-2. Design "Probe" test per GOVERNANCE_MAINTENANCE.md:
+2. Design "Probe" test per Governance Maintenance (in .github/skills/internal-governance/SKILL.md):
    - Clear chat context
    - Load current Standards
    - Construct prompt that violates the target rule
@@ -191,7 +191,7 @@ Scribes are typically replaced by a formal plan artifact; they are archived once
 
 ## ADR Template Enhancements
 
-Update [ADR_TEMPLATE.md](../../../ADR_TEMPLATE.md) to support:
+Update ADR Template (in .github/skills/templates/SKILL.md) to support:
 
 1. **Status Values:** Add to the existing list:
    - `Proposed` ← Initial suspect identification
@@ -234,17 +234,17 @@ Update [ADR_TEMPLATE.md](../../../ADR_TEMPLATE.md) to support:
 
 2. **Create `.github/prompts/archive/` directory** for old scribe and plan artifacts
 
-3. **Update SPEC_PROTOCOL.md** to formalize scribe artifacts:
+3. **Update .github/instructions/spec-protocol.instructions.md** to formalize scribe artifacts:
    - Add section defining scribe purpose and naming convention
    - Position scribe in workflow diagram (before thinking phase)
    - Note that scribes transition to plans; old scribes are archived
 
-4. **Update [ADR_TEMPLATE.md](../../../ADR_TEMPLATE.md)** to include:
+4. **Update ADR Template (in .github/skills/templates/SKILL.md)** to include:
    - Full list of status values (Proposed, Testing, Accepted, Rejected, Deprecated, WONTFIX)
    - Governance-specific sections (Suspect List, Test Plan, Execution Notes, Validation Results)
    - Example ADR for a governance change (e.g., pruning a verbose rule)
 
-5. **Document governance maintenance invocation** in [GOVERNANCE_MAINTENANCE.md](../../../GOVERNANCE_MAINTENANCE.md):
+5. **Document governance maintenance invocation** in Governance Maintenance (in .github/skills/internal-governance/SKILL.md):
    - How to start governance scan (e.g., agent instruction or CLI command)
    - Expected ADR output
    - How to hand off to next session (by ADR number)
@@ -265,7 +265,7 @@ Update [ADR_TEMPLATE.md](../../../ADR_TEMPLATE.md) to support:
 
 ## Constraints & Safeguards
 
-- **No in-place edits:** Governance files (STANDARDS_*.md, .cursorrules) remain unchanged until Phase 4 ADR is `Accepted`
+- **No in-place edits:** Governance files (.github/instructions/*.instructions.md, .github/copilot-instructions.md) remain unchanged until Phase 4 ADR is `Accepted`
 - **Protected files:** ADR itself is the only mutable record during Phases 1–3
 - **Immutable baseline:** Suspect list and test plan (Phases 1–2) cannot be altered; new concerns become new ADRs
 - **Living document exception:** Execution Notes and Validation Results may be amended with timestamps if new information emerges (aligned with industry ADR practice)
@@ -289,8 +289,8 @@ Update [ADR_TEMPLATE.md](../../../ADR_TEMPLATE.md) to support:
 **Immediate Actions:**
 1. User approves this master plan
 2. Create `.github/adr/` directory and README
-3. Update ADR_TEMPLATE.md with governance sections
-4. Update GOVERNANCE_MAINTENANCE.md with invocation & handoff guidance
+3. Update ADR Template (in .github/skills/templates/SKILL.md) with governance sections
+4. Update Governance Maintenance (in .github/skills/internal-governance/SKILL.md) with invocation & handoff guidance
 5. Create first governance-maintenance.prompt for Session 1 agent
 
 **First Cycle Test:**

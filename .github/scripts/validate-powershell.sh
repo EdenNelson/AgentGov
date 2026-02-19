@@ -38,17 +38,39 @@ if ! file -b --mime-encoding "$file" | grep -qE 'utf-8|us-ascii'; then
   errors+=("File encoding is not UTF-8")
 fi
 
-# Check 3: Require two trailing blank lines to protect signature blocks
-line_count=$(wc -l < "$file" | tr -d ' ')
-if [[ "$line_count" -lt 2 ]]; then
-  errors+=("File must end with two blank lines; file has fewer than 2 lines")
-else
-  last_two_lines=$(tail -n 2 "$file" || true)
-  last_line_one=$(printf '%s\n' "$last_two_lines" | sed -n '1p')
-  last_line_two=$(printf '%s\n' "$last_two_lines" | sed -n '2p')
-  if [[ ! "$last_line_one" =~ ^[[:space:]]*$ ]] || [[ ! "$last_line_two" =~ ^[[:space:]]*$ ]]; then
-    errors+=("File must end with two blank lines")
-  fi
+# Check 3: Require two blank lines between code and signature block (or EOF)
+blank_line_check=$(awk '
+  BEGIN { last_code_line = 0; sig_start = 0 }
+  /^# SIG # Begin signature block$/ { sig_start = NR; next }
+  /^[[:space:]]*$/ { next }
+  { last_code_line = NR }
+  END {
+    if (last_code_line == 0) {
+      print "no_code"
+      exit 0
+    }
+    if (sig_start > 0) {
+      blank_gap = sig_start - last_code_line - 1
+      if (blank_gap != 2) {
+        print "sig_blank_mismatch:" blank_gap
+      } else {
+        print "ok"
+      }
+    } else {
+      blank_gap = NR - last_code_line
+      if (blank_gap != 2) {
+        print "eof_blank_mismatch:" blank_gap
+      } else {
+        print "ok"
+      }
+    }
+  }
+' "$file")
+
+if [[ "$blank_line_check" == "no_code" ]]; then
+  errors+=("File has no code")
+elif [[ "$blank_line_check" != "ok" ]]; then
+  errors+=("$blank_line_check")
 fi
 
 # Check 4: Balanced syntax elements (excluding comments)

@@ -20,7 +20,6 @@ applyTo: '**'
 - **Priorities:** Correctness, Clarity, and Idempotence > Brevity.
 - **Spec Protocol Requirement:** Significant architectural changes must be written, persisted, and approved before implementation (see spec-protocol.instructions.md).
 - **Idempotency:** All scripts must be re-runnable without side effects (Check → Test → Set pattern).
-- **Preservation:** Do not modify digital signature blocks under any circumstances.
 
 ### 1.2 AI Interaction & Context
 

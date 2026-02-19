@@ -51,20 +51,7 @@ for file in "$@"; do
     continue
   }
 
-  awk '
-    { lines[NR] = $0 }
-    END {
-      n = NR
-      while (n > 0 && lines[n] ~ /^[[:space:]]*$/) {
-        n--
-      }
-      for (i = 1; i <= n; i++) {
-        print lines[i]
-      }
-      print ""
-      print ""
-    }
-  ' "$tmp_file" > "$trim_file"
+  cp "$tmp_file" "$trim_file"
 
   if ! cmp -s "$trim_file" "$file"; then
     mv "$trim_file" "$file"
