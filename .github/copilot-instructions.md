@@ -8,11 +8,11 @@
 
 **Scope:** Files covered by this rule:
 
-- SPEC_PROTOCOL.md, STANDARDS_CORE.md, STANDARDS_BASH.md, STANDARDS_POWERSHELL.md, STANDARDS_ORCHESTRATION.md
-- CONSENT_CHECKLIST.md, MIGRATION_TEMPLATE.md, GOVERNANCE_MAINTENANCE.md, ADR_TEMPLATE.md
-- .github/copilot-instructions.md
-- .github/instructions/*.instructions.md (path-specific instruction files)
-- .github/agents/*.agent.md (custom agent files)
+- `.github/instructions/*.instructions.md` (path-specific instructions)
+- `.github/agents/*.agent.md` (custom agents)
+- `.github/adr/*.md` (architectural decision records)
+- `.github/skills/*/SKILL.md` (on-demand skills)
+- `.github/copilot-instructions.md` (custom instructions)
 
 **The Rule:**
 
@@ -53,12 +53,11 @@
 
 **IF** you are about to modify, create, or delete ANY of these files:
 
-- SPEC_PROTOCOL.md, STANDARDS_CORE.md, STANDARDS_BASH.md, STANDARDS_POWERSHELL.md, STANDARDS_ORCHESTRATION.md
-- CONSENT_CHECKLIST.md, GOVERNANCE_MAINTENANCE.md, MIGRATION_TEMPLATE.md, ADR_TEMPLATE.md
-- .github/copilot-instructions.md
-- .github/instructions/*.instructions.md (any path-specific instruction file)
-- .github/agents/*.agent.md (any custom agent file)
-- .github/adr/*.md (any ADR)
+- `.github/instructions/*.instructions.md` (path-specific instructions)
+- `.github/agents/*.agent.md` (custom agents)
+- `.github/adr/*.md` (architectural decision records)
+- `.github/skills/*/SKILL.md` (on-demand skills)
+- `.github/copilot-instructions.md` (custom instructions)
 
 **THEN** you MUST immediately:
 

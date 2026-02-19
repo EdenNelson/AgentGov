@@ -2,9 +2,9 @@
 
 **Date:** 2026-02-18  
 **Owner:** Pragmatic Architect  
-**Status:** COMPLETE (All Stages) — Release Deferred Pending Further Testing  
-**Scope:** Complete migration to GitHub's official Copilot standards (Custom Agents + Skills + Custom Instructions) for both AgentGov and Sync-AgentGov  
-**Impact:** Breaking change to governance framework distribution and consumer project adoption patterns
+**Status:** Stage 5 Amendment IN-PROGRESS — Hallucination Prevention: Fix Governance Guard Rule References  
+**Scope:** Complete migration to GitHub's official Copilot standards (Custom Agents + Skills + Custom Instructions) for both AgentGov and Sync-AgentGov; fix outdated file references in governance rules  
+**Impact:** Breaking change to governance framework distribution and consumer project adoption patterns; governance rule stability fix
 
 ---
 
@@ -674,6 +674,100 @@ Approved by: Eden Nelson on 2026-02-18
 Completed: 2026-02-18
 Result: Zero emojis remain; strict enforcement active; markdown.instructions.md auto-loads for all *.md files
 ```
+
+---
+
+## Stage 5 Amendment: Hallucination Prevention - Governance Guard Rule File References (IN-PROGRESS 2026-02-18)
+
+**Objective:** Fix governance bug where the "Automatic Governance Hard Gate Detection" rule in `.github/copilot-instructions.md` references non-existent files, creating hallucination risk when evaluated by agents.
+
+**Problem Identified (Feb 18):**
+
+The governance guard rule lists files that no longer exist after migration (Stages 1-3):
+
+Files listed in rule but **DO NOT EXIST:**
+- `SPEC_PROTOCOL.md` — Migrated to `.github/instructions/spec-protocol.instructions.md`
+- `STANDARDS_CORE.md` — Migrated to `.github/instructions/general-coding.instructions.md`
+- `STANDARDS_BASH.md` — Migrated to `.github/instructions/bash.instructions.md`
+- `STANDARDS_POWERSHELL.md` — Migrated to `.github/instructions/powershell.instructions.md`
+- `STANDARDS_ORCHESTRATION.md` — Migrated to `.github/instructions/orchestration.instructions.md`
+- `GOVERNANCE_MAINTENANCE.md` — Migrated to `.github/skills/internal-governance/SKILL.md`
+- `MIGRATION_TEMPLATE.md` — Migrated to `.github/skills/templates/SKILL.md`
+- `ADR_TEMPLATE.md` — Migrated to `.github/skills/templates/SKILL.md`
+
+Files listed that **DO NOT EXIST and never will:**
+- `CONSENT_CHECKLIST.md` — Migrated to `.github/skills/internal-governance/SKILL.md`
+
+**Impact:** When the governance guard rule is evaluated, it triggers false positives about modifying "non-existent files," causing agents to hallucinate about what actually needs approval. This violates §1 of the Governance Immutability Rule (RULE #0).
+
+**Root Cause (per orchestration.instructions.md §8 "The Clinic"):**
+- **Classification:** Gap + Drift
+- **Gap:** The governance guard rule was not updated after migration
+- **Drift:** Cross-reference between `.github/copilot-instructions.md` and migrated files
+
+**Approved Fix (Eden Nelson on 2026-02-18):**
+
+1. Update `.github/copilot-instructions.md` § "Automatic Governance Hard Gate Detection" to reference actual files:
+   - Replace hardcoded file list with correct paths (.github/instructions/*.md, .github/agents/*.md, .github/adr/*.md, .github/skills/*/SKILL.md)
+   - Remove all references to deleted/non-existent files
+   - Add `.github/skills/*/SKILL.md` pattern (was missing)
+   - Ensure rule evaluates only against files that actually exist
+
+2. Validate rule completeness by checking `.github/` structure:
+   - Instructions: 7 files (.github/instructions/*.instructions.md) — all auto-loaded
+   - Agents: 2 files (.github/agents/*.agent.md) — user-selected
+   - Skills: 2 directories (.github/skills/templates/, .github/skills/internal-governance/) with SKILL.md
+   - ADRs: 20+ files (.github/adr/*.md) — architecture decisions
+
+3. Test rule activation:
+   - Confirm rule triggers ONLY for actual governance files
+   - Confirm rule does NOT hallucinate about deleted files
+
+**Deliverables:**
+
+- [x] **Update `.github/copilot-instructions.md` (Section: Automatic Governance Hard Gate Detection)**
+  - [x] Remove hardcoded file list (lines ~62-70)
+  - [x] Replace with accurate pattern-based scope:
+    ```
+    **Scope:** Files covered by this rule:
+    
+    - `.github/instructions/*.instructions.md` (path-specific instructions)
+    - `.github/agents/*.agent.md` (custom agents)
+    - `.github/adr/*.md` (architectural decision records)
+    - `.github/skills/*/SKILL.md` (on-demand skills)
+    - `.github/copilot-instructions.md` (custom instructions)
+    ```
+  - [x] Remove references to deleted files (SPEC_PROTOCOL.md, STANDARDS_*.md, *_TEMPLATE.md, *_CHECKLIST.md, etc.)
+  - [x] Verify coverage completeness against actual `.github/` structure
+
+- [x] **Update `.github/copilot-instructions.md` (Section: Governance Immutability Rule)**
+  - [x] Update scope section to reference actual file patterns only
+  - [x] Removed all deleted file references from RULE #0
+
+- [x] **Update `/Users/nelson/Documents/GitHub/Sync-AgentGov/.github/copilot-instructions.md`**
+  - [x] Fixed both Governance Immutability Rule section (Sync-AgentGov sync had same stale references)
+  - [x] Fixed Automatic Governance Hard Gate Detection section
+
+- [x] **Test rule completeness:**
+  - [x] Confirm rule now covers ALL governance files that exist
+  - [x] Confirm rule does NOT reference non-existent files
+  - [x] Fixed both files (AgentGov and synced consumer project)
+  - [x] Verify no false positives when evaluating actual files
+
+**Status:** [COMPLETE] — Implementation finished 2026-02-18
+
+**Files Modified:**
+- `.github/copilot-instructions.md` (2 sections updated: Governance Immutability Rule + Automatic Governance Hard Gate Detection)
+- `/Users/nelson/Documents/GitHub/Sync-AgentGov/.github/copilot-instructions.md` (2 sections updated: consumer project sync fixed)
+
+**Checkpoint Criteria:** [COMPLETE] MET
+- All references to deleted files removed from governance guard rule
+- Rule now references only actual files that exist in repository
+- No hallucination risk when rule is evaluated
+- Zero false positives on actual governance files
+- Both AgentGov and Sync-AgentGov updated
+
+**Approval Gate:** Amendment approved by Eden Nelson on 2026-02-18; implementation COMPLETE.
 
 ---
 
