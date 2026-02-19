@@ -81,4 +81,10 @@ if [[ $errors -ne 0 ]]; then
   exit 1
 fi
 
+# Force filesystem sync to ensure file changes are written to disk before returning
+# This prevents "file is newer" conflicts when the agent/editor checks the file immediately
+if command -v sync &>/dev/null; then
+  sync
+fi
+
 exit 0
