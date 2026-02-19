@@ -38,7 +38,20 @@ if ! file -b --mime-encoding "$file" | grep -qE 'utf-8|us-ascii'; then
   errors+=("File encoding is not UTF-8")
 fi
 
-# Check 3: Balanced syntax elements (excluding comments)
+# Check 3: Require two trailing blank lines to protect signature blocks
+line_count=$(wc -l < "$file" | tr -d ' ')
+if [[ "$line_count" -lt 2 ]]; then
+  errors+=("File must end with two blank lines; file has fewer than 2 lines")
+else
+  last_two_lines=$(tail -n 2 "$file" || true)
+  last_line_one=$(printf '%s\n' "$last_two_lines" | sed -n '1p')
+  last_line_two=$(printf '%s\n' "$last_two_lines" | sed -n '2p')
+  if [[ ! "$last_line_one" =~ ^[[:space:]]*$ ]] || [[ ! "$last_line_two" =~ ^[[:space:]]*$ ]]; then
+    errors+=("File must end with two blank lines")
+  fi
+fi
+
+# Check 4: Balanced syntax elements (excluding comments)
 content=$(grep -v '^\s*#' "$file" || true)
 
 # Count braces
@@ -74,7 +87,7 @@ if [[ $((single_quotes % 2)) -ne 0 ]]; then
   errors+=("Unbalanced single quotes: found $single_quotes (must be even)")
 fi
 
-# Check 4: CRITICAL - PSScriptAnalyzer validation (syntax errors only)
+# Check 5: CRITICAL - PSScriptAnalyzer validation (syntax errors only)
 pssa_available=false
 pssa_used=false
 
