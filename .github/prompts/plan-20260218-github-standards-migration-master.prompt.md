@@ -2,7 +2,7 @@
 
 **Date:** 2026-02-18  
 **Owner:** Pragmatic Architect  
-**Status:** APPROVED & IN-PROGRESS (Stages 1-3 [COMPLETE], Stage 3B [COMPLETE], Stage 4 [VERIFIED] — Ready for Commit & Release (Stage 5))  
+**Status:** APPROVED & IN-PROGRESS (Stages 1-3B [COMPLETE], Stage 4 [COMPLETE], Stage 5 IN-PROGRESS — Ready for Release v2.0.0)  
 **Scope:** Complete migration to GitHub's official Copilot standards (Custom Agents + Skills + Custom Instructions) for both AgentGov and Sync-AgentGov  
 **Impact:** Breaking change to governance framework distribution and consumer project adoption patterns
 
@@ -15,7 +15,7 @@
 1. **DO NOT CREATE NEW PLANS.** Continue with THIS plan: `plan-20260218-github-standards-migration-master.prompt.md`
 2. **DO NOT ASSUME CONTEXT.** Read the entire "Completed Work" section to understand what's been done.
 3. **WHEN CONTEXT CHANGES:** Update this plan to reflect new decisions; do not create separate amendment plans.
-4. **CURRENT STATUS: Stage 4 - Consumer Migration Guidance (PENDING)** — Stages 1-3 [COMPLETE] COMPLETE, Stage 3B [COMPLETE] COMPLETE (Feb 18). Markdown hygiene consolidated; strict emoji ban enforced; zero emojis remain. Ready for Stage 4 consumer rollout. See "Next Steps" at end of plan.
+4. **CURRENT STATUS: Stage 5 - Commit & Release (IN-PROGRESS)** — Stages 1-4 [COMPLETE] (Feb 18). All infrastructure migrated; sync tested and working; pushed to GitHub (commit 1873011). Ready for v2.0.0 release and migration guide. See "Next Steps" at end of plan.
 5. **Reference commits to this plan:** `refs: plan-20260218-github-standards-migration-master`
 
 ---
@@ -708,39 +708,44 @@ Result: Zero emojis remain; strict enforcement active; markdown.instructions.md 
 
 ---
 
-## Next Steps (Immediate — Stage 5: Commit & Release)
+## Next Steps (Immediate — Stage 5: Release v2.0.0)
 
-**CURRENT STATUS: Stages 1-3B [COMPLETE], Stage 4 [VERIFIED] (Feb 18). All infrastructure migrated; sync manifest validated; markdown hygiene enforced; zero emojis. Ready for git commit and v2.0.0 release.**
+**CURRENT STATUS: Stages 1-3B [COMPLETE], Stage 4 [COMPLETE] (Feb 18). All infrastructure migrated; sync manifest validated; markdown hygiene enforced; zero emojis; live sync tested and working. Stage 5 IN-PROGRESS: Committed to GitHub; ready for release.**
 
-**STAGE 4 VERIFICATION SUMMARY:**
+**STAGE 4 COMPLETION SUMMARY:**
 - [COMPLETE] Verified 7 instruction files ready for sync (.github/instructions/)
 - [COMPLETE] Verified 2 agent files ready for sync (.github/agents/)
 - [COMPLETE] Verified internal-governance exclusion configured correctly in sync-manifest.json
 - [COMPLETE] Verified templates skill will sync; internal-governance will NOT sync
 - [COMPLETE] Structural validation: PASS
-- [DEFERRED] Live sync test: **DEFERRED** (requires git commit/push to GitHub first)
+- [COMPLETE] Fixed PowerShell sync script variable scoping bug (script-level vars need $script: prefix)
+- [COMPLETE] Fixed PowerShell URL construction bug (split URL building into two steps to avoid query param collision)
+- [COMPLETE] Live sync test: **SUCCESS** — 2 agents, 7 instructions, 1 skill (templates), 3 hooks, 6 scripts synced correctly; internal-governance correctly excluded
 
-**NEXT PHASE (Stage 5): Commit changes, release v2.0.0, create migration guide, test live sync to Sync-AgentGov.**
+**NEXT PHASE (Stage 5): Release v2.0.0 and create migration guide.**
 
-**DO THIS NEXT:**
+**PROGRESS (Feb 18):**
 
 1. **Git Commit All Stage 3B Changes**
-   - [ ] Stage all modified files (copilot-instructions.md, plan file, all governance files with emoji replacements)
-   - [ ] Stage new markdown.instructions.md
-   - [ ] Stage modified general-coding.instructions.md and validate-markdown.sh
-   - [ ] Commit with message: `feat(standards): Stage 3B - Markdown hygiene consolidation with strict emoji ban`
-   - [ ] Reference plan: `refs: plan-20260218-github-standards-migration-master`
+   - [COMPLETE] Staged all modified files (copilot-instructions.md, plan file, all governance files with emoji replacements)
+   - [COMPLETE] Staged new markdown.instructions.md
+   - [COMPLETE] Staged modified general-coding.instructions.md and validate-markdown.sh
+   - [COMPLETE] Committed with message: `feat(standards)!: Stage 3B - Markdown hygiene consolidation with strict emoji ban`
+   - [COMPLETE] Referenced plan: `refs: plan-20260218-github-standards-migration-master`
 
 2. **Push to GitHub**
-   - [ ] Push changes to main branch
-   - [ ] Verify GitHub Actions pass (if applicable)
+   - [COMPLETE] Pushed changes to main branch (commit 1873011)
+   - [COMPLETE] GitHub push successful (99 objects, 103.92 KiB)
 
 3. **Test Live Sync to Sync-AgentGov**
-   - [ ] Run `pwsh Sync-AgentGov.ps1 -Verbose` from Sync-AgentGov directory
-   - [ ] Verify all 7 instruction files sync correctly
-   - [ ] Verify markdown.instructions.md present and emoji ban active
-   - [ ] Verify internal-governance skill NOT present in Sync-AgentGov
-   - [ ] Verify templates skill IS present
+   - [COMPLETE] Fixed Sync-AgentGov.ps1 variable scoping bugs (added $script: prefixes)
+   - [COMPLETE] Fixed URL construction (split into two steps to avoid PowerShell string interpolation issues)
+   - [COMPLETE] Ran `pwsh Sync-AgentGov.ps1 -Verbose` successfully
+   - [COMPLETE] Verified all 7 instruction files synced correctly (bash, general-coding, markdown, orchestration, powershell, spec-protocol, templates)
+   - [COMPLETE] Verified markdown.instructions.md present and emoji ban active
+   - [COMPLETE] Verified internal-governance skill NOT present in Sync-AgentGov (correctly excluded)
+   - [COMPLETE] Verified templates skill IS present (only public skill synced)
+   - [COMPLETE] Verified deprecated file cleanup (ADR_TEMPLATE.md removed, replaced by templates skill)
 
 4. **Release v2.0.0**
    - [ ] Tag version: `v2.0.0` (breaking change: emoji ban, personas→agents, path-specific instructions)
