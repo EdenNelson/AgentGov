@@ -9,7 +9,7 @@
 
 ## Problem Statement
 
-STANDARDS_POWERSHELL.md contains contradictory guidance on loop constructs:
+.github/instructions/powershell.instructions.md contains contradictory guidance on loop constructs:
 
 1. "Prefer `foreach` for high-volume data and performance-sensitive loops"
 2. "Use `ForEach-Object` when streaming in pipelines to save memory or preserve pipeline semantics"
@@ -25,7 +25,7 @@ STANDARDS_POWERSHELL.md contains contradictory guidance on loop constructs:
 
 ### Current State
 
-STANDARDS_POWERSHELL.md §"Loop Constructs" attempts to establish a performance preference but muddles the guidance:
+.github/instructions/powershell.instructions.md §"Loop Constructs" attempts to establish a performance preference but muddles the guidance:
 
 - Correct principle: `foreach` is faster and preferred for memory-intensive operations
 - Correct principle: `ForEach-Object` is useful for pipeline streaming to preserve memory
@@ -66,7 +66,7 @@ Clarify the decision tree with explicit conditions for each construct:
 
 ## Plan
 
-### STAGE 1: Update STANDARDS_POWERSHELL.md with Clarified Decision Tree
+### STAGE 1: Update .github/instructions/powershell.instructions.md with Clarified Decision Tree
 
 **Objective:** Replace ambiguous guidance with explicit decision tree
 
@@ -110,7 +110,7 @@ Get-ChildItem -Path $directory | ForEach-Object -Process {
 ```
 ```
 
-**Checkpoint:** STANDARDS_POWERSHELL.md "Loop Constructs" section reviewed and updated
+**Checkpoint:** .github/instructions/powershell.instructions.md "Loop Constructs" section reviewed and updated
 
 ### STAGE 2: Validate Against Existing ADRs
 
@@ -149,7 +149,7 @@ Get-ChildItem -Path $directory | ForEach-Object -Process {
 
 ## References
 
-- [STANDARDS_POWERSHELL.md](../../STANDARDS_POWERSHELL.md) (current, ambiguous guidance)
-- [SPEC_PROTOCOL.md](../../SPEC_PROTOCOL.md) (non-breaking governance changes)
-- [STANDARDS_CORE.md](../../STANDARDS_CORE.md) §1.1 (Correctness, Clarity principle)
+- [.github/instructions/powershell.instructions.md](../../.github/instructions/powershell.instructions.md) (current, ambiguous guidance)
+- [.github/instructions/spec-protocol.instructions.md](../../.github/instructions/spec-protocol.instructions.md) (non-breaking governance changes)
+- [.github/instructions/general-coding.instructions.md](../../.github/instructions/general-coding.instructions.md) §1.1 (Correctness, Clarity principle)
 

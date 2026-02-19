@@ -88,9 +88,9 @@ This ensures **architectural decisions are written and reviewed before code gene
 ## CURRENT STATE ANALYSIS
 
 ### Current Model: Implicit Permission
-- **CONSENT_CHECKLIST.md** provides a checklist (reactive approval gate)
-- **STANDARDS_ORCHESTRATION.md** defines consent rules but lacks **durable architectural documentation**
-- **MIGRATION_TEMPLATE.md** exists for user-facing changes but no **agent-facing plan artifacts**
+- **Consent Checklist (.github/skills/internal-governance/SKILL.md)** provides a checklist (reactive approval gate)
+- **.github/instructions/orchestration.instructions.md** defines consent rules but lacks **durable architectural documentation**
+- **Migration Template (.github/skills/templates/SKILL.md)** exists for user-facing changes but no **agent-facing plan artifacts**
 - **No persisted planning requirement** before significant changes
 - Decisions exist only in ephemeral chat; no checkpoint recovery after session crashes
 
@@ -118,12 +118,12 @@ This ensures **architectural decisions are written and reviewed before code gene
 
 | File | Current State | Target Change | Rationale |
 |------|---------------|----------------|-----------|
-| **CONSENT_CHECKLIST.md** | Reactive checklist | Add **Pre-Change Analysis** section | Enforce written spec before approval |
-| **STANDARDS_ORCHESTRATION.md** | Mentions Spec Protocol (§3) vaguely | **Fully specify** the Spec Protocol workflow | Detailed, actionable instructions |
-| **MIGRATION_TEMPLATE.md** | User-facing migrations only | Add **Agent Planning Template** section | Agents must document architectural changes |
-| **STANDARDS_CORE.md** | General principles only | Add **Spec Protocol Requirement** | Enforce spec-first approach globally |
+| **Consent Checklist (.github/skills/internal-governance/SKILL.md)** | Reactive checklist | Add **Pre-Change Analysis** section | Enforce written spec before approval |
+| **.github/instructions/orchestration.instructions.md** | Mentions Spec Protocol (§3) vaguely | **Fully specify** the Spec Protocol workflow | Detailed, actionable instructions |
+| **Migration Template (.github/skills/templates/SKILL.md)** | User-facing migrations only | Add **Agent Planning Template** section | Agents must document architectural changes |
+| **.github/instructions/general-coding.instructions.md** | General principles only | Add **Spec Protocol Requirement** | Enforce spec-first approach globally |
 | **.github/prompts/** | Empty directory | **Establish prompt persistence pattern** | Durable checkpoints for refactoring |
-| **NEW: SPEC_PROTOCOL.md** | Does not exist | Create detailed reference guide | Central documentation for Spec Protocol |
+| **NEW: .github/instructions/spec-protocol.instructions.md** | Does not exist | Create detailed reference guide | Central documentation for Spec Protocol |
 
 ---
 
@@ -131,15 +131,15 @@ This ensures **architectural decisions are written and reviewed before code gene
 
 ### Old Rules Being Superseded
 
-The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance that will be **replaced or clarified** by the Spec Protocol:
+The current .github/instructions/orchestration.instructions.md contains vague and conflicting guidance that will be **replaced or clarified** by the Spec Protocol:
 
 | Old Rule | Current Weakness | How Spec Protocol Replaces It |
 |----------|------------------|------------------------------|
 | **§1.1 Consent Gate** (User approval required) | Approval can happen without written specs; implicit consent allowed | **Preserved & Enhanced:** Consent now *requires* written plan artifacts showing Analysis, Assessment, and Plan before user approval gate |
 | **§1.2 Required Approval Flow** (Propose → Ask → Implement) | Proposal can be verbal/chat-only; no durable record | **Replaced:** New flow is Plan (persisted) → Approve (written) → Implement; plan is the proposal artifact |
-| **§3 ARCHITECTURAL SPECIFICATION (vague)** | Mentioned but not defined; no actionable spec structure | **Replaced:** Merged into new SPEC_PROTOCOL.md with full definition and examples |
-| **§4.1 Non-Ephemeral Planning (vague)** | Says plans should be persisted but gives no structure, naming convention, or minimum contents | **Replaced:** SPEC_PROTOCOL.md provides Plan Prompt Naming Convention, Minimum Contents, and Recovery Procedures |
-| **§4.3 Plan Prompt Minimum Contents (vague)** | Lists vague sections ("Analysis and Assessment") without definitions | **Replaced:** New SPEC_PROTOCOL.md defines each section with examples and required minimum content |
+| **§3 ARCHITECTURAL SPECIFICATION (vague)** | Mentioned but not defined; no actionable spec structure | **Replaced:** Merged into new .github/instructions/spec-protocol.instructions.md with full definition and examples |
+| **§4.1 Non-Ephemeral Planning (vague)** | Says plans should be persisted but gives no structure, naming convention, or minimum contents | **Replaced:** .github/instructions/spec-protocol.instructions.md provides Plan Prompt Naming Convention, Minimum Contents, and Recovery Procedures |
+| **§4.3 Plan Prompt Minimum Contents (vague)** | Lists vague sections ("Analysis and Assessment") without definitions | **Replaced:** New .github/instructions/spec-protocol.instructions.md defines each section with examples and required minimum content |
 
 ### Integration Points (No Breaking Changes to User Consent)
 
@@ -158,9 +158,9 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 
 ### Files That Will Be Merged/Replaced
 
-- **STANDARDS_ORCHESTRATION.md §3–4** → Merged into SPEC_PROTOCOL.md; links updated
-- **STANDARDS_ORCHESTRATION.md §1** → Kept but enhanced (references Spec Protocol as prerequisite)
-- **CONSENT_CHECKLIST.md** → Updated to reference plan artifacts; workflow reordered
+- **.github/instructions/orchestration.instructions.md §3–4** → Merged into .github/instructions/spec-protocol.instructions.md; links updated
+- **.github/instructions/orchestration.instructions.md §1** → Kept but enhanced (references Spec Protocol as prerequisite)
+- **Consent Checklist (.github/skills/internal-governance/SKILL.md)** → Updated to reference plan artifacts; workflow reordered
 
 ### No Removed Permissions
 
@@ -177,7 +177,7 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 **Objective:** Write the authoritative Spec Protocol spec itself. **This spec will enforce the hard gate: architectural decisions must be written and reviewed before code generation begins.**
 
 **Deliverables:**
-- [ ] **SPEC_PROTOCOL.md** (new file)
+- [ ] **.github/instructions/spec-protocol.instructions.md** (new file)
   - Definition and purpose of Spec Protocol
   - **Anti-Pattern Addressed:** "Coding While Thinking" — the failure mode of beginning code generation before decisions are finalized
   - Workflow diagram (Analyze → Assess → Plan → Approve → **[HARD GATE]** → Implement)
@@ -187,17 +187,17 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
   - Scope exceptions (minor edits, typos, comment fixes)
   - **Emphasis:** Thinking phase must complete with persisted artifacts **before** coding phase begins
 
-**Checkpoint:** SPEC_PROTOCOL.md reviewed and approved
+**Checkpoint:** .github/instructions/spec-protocol.instructions.md reviewed and approved
 
 ---
 
 ### STAGE 2: Update Orchestration Standards
 
-**Objective:** Integrate Spec Protocol into STANDARDS_ORCHESTRATION.md
+**Objective:** Integrate Spec Protocol into .github/instructions/orchestration.instructions.md
 
 **Deliverables:**
-- [ ] **STANDARDS_ORCHESTRATION.md** (update)
-  - Replace vague §3 ("ARCHITECTURAL SPECIFICATION") with full Spec Protocol spec OR cross-reference to SPEC_PROTOCOL.md
+- [ ] **.github/instructions/orchestration.instructions.md** (update)
+  - Replace vague §3 ("ARCHITECTURAL SPECIFICATION") with full Spec Protocol spec OR cross-reference to .github/instructions/spec-protocol.instructions.md
   - Expand §4 ("NON-EPHEMERAL PLANNING") with:
     - Explicit trigger conditions (breaking changes, refactors, feature additions, structural reorganizations)
     - Plan prompt naming convention with examples
@@ -205,16 +205,16 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
     - Recovery procedures after session crashes
   - Clarify relationships between Consent Gate (§1) and Spec Protocol (§4)
 
-**Checkpoint:** STANDARDS_ORCHESTRATION.md updated and reviewed
+**Checkpoint:** .github/instructions/orchestration.instructions.md updated and reviewed
 
 ---
 
 ### STAGE 3: Strengthen Consent Checklist
 
-**Objective:** Refactor CONSENT_CHECKLIST.md to require written analysis *before* approval.
+**Objective:** Refactor Consent Checklist (in .github/skills/internal-governance/SKILL.md) to require written analysis *before* approval.
 
 **Deliverables:**
-- [ ] **CONSENT_CHECKLIST.md** (update)
+- [ ] **Consent Checklist (.github/skills/internal-governance/SKILL.md)** (update)
   - Add section: **"Pre-Change Analysis (Required Before Approval)"**
     - Concise analysis of impact, risks, alternatives
     - Reference to the durable plan prompt (if created)
@@ -222,7 +222,7 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
   - Add checkbox: "[ ] Written plan persisted in `.github/prompts/`"
   - Add checkpoint: "[ ] Plan reviewed and approved in session before implementation begins"
 
-**Checkpoint:** CONSENT_CHECKLIST.md updated and reviewed
+**Checkpoint:** Consent Checklist updated and reviewed
 
 ---
 
@@ -231,20 +231,20 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 **Objective:** Ensure all standards reference Spec Protocol; no contradictions.
 
 **Deliverables:**
-- [ ] **STANDARDS_CORE.md** (update)
+- [ ] **.github/instructions/general-coding.instructions.md** (update)
   - Add reference to Spec Protocol in §1.1 (Core Values) or new section
-  - Link to STANDARDS_ORCHESTRATION.md and SPEC_PROTOCOL.md
+  - Link to .github/instructions/orchestration.instructions.md and .github/instructions/spec-protocol.instructions.md
   - Clarify that "Coding while Thinking" is prohibited for significant changes
 
-- [ ] **STANDARDS_BASH.md** (review only; no changes unless needed)
+- [ ] **.github/instructions/bash.instructions.md** (review only; no changes unless needed)
   - Verify no contradictions with Spec Protocol
 
-- [ ] **STANDARDS_POWERSHELL.md** (review only; no changes unless needed)
+- [ ] **.github/instructions/powershell.instructions.md** (review only; no changes unless needed)
   - Verify no contradictions with Spec Protocol
 
 - [ ] **PROJECT_CONTEXT.md** (update)
   - Add section: "Governance & Specification Protocol"
-  - Link to SPEC_PROTOCOL.md and STANDARDS_ORCHESTRATION.md
+  - Link to .github/instructions/spec-protocol.instructions.md and .github/instructions/orchestration.instructions.md
   - Brief summary of Spec Protocol applicability
 
 **Checkpoint:** All standards reviewed for alignment; cross-references verified
@@ -256,7 +256,7 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 **Objective:** Explain Spec Protocol to users and agents; establish repeatable pattern.
 
 **Deliverables:**
-- [ ] **MIGRATION_TEMPLATE.md** (update or extend)
+- [ ] **Migration Template (.github/skills/templates/SKILL.md)** (update or extend)
   - Add **Agent Planning Template** section for architectural changes
   - Separate sections: User-Facing Changes vs. Agent Architectural Changes
   - Link to plan prompt example
@@ -277,7 +277,7 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 **Deliverables:**
 - [ ] **Refactoring This Task Using Spec Protocol**
   - Create `plan-20260124-spectProtocolRefactor.prompt.md` (this file)
-  - Link the plan to implementation in STANDARDS_ORCHESTRATION.md as an example
+  - Link the plan to implementation in .github/instructions/orchestration.instructions.md as an example
   - After refactoring is complete, plan artifact serves as audit trail
 
 **Checkpoint:** Plan artifact exists; links trace implementation back to plan
@@ -298,8 +298,8 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 6. **No Audit Trail:** Cannot answer "Why was this decision made?" months later
 
 **Example Scenario:**
-- Agent starts refactoring STANDARDS_ORCHESTRATION.md without a written plan
-- Realizes mid-way that Spec Protocol spec should be in a separate file (SPEC_PROTOCOL.md)
+- Agent starts refactoring .github/instructions/orchestration.instructions.md without a written plan
+- Realizes mid-way that Spec Protocol spec should be in a separate file (.github/instructions/spec-protocol.instructions.md)
 - Backtracks, deletes work, starts over
 - Session crashes; plan is lost; next session starts from scratch
 - User approves final changes without knowing rejected alternatives were considered
@@ -333,19 +333,19 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 
 ### Files Created
 - `.github/prompts/plan-20260124-spectProtocolRefactor.prompt.md` (this file)
-- `.github/prompts/SPEC_PROTOCOL.md` (new file)
+- `.github/instructions/spec-protocol.instructions.md` (new file)
 - Possibly: `GOVERNANCE_GUIDE.md` (if needed for clarity)
 
 ### Files Modified
-- `STANDARDS_ORCHESTRATION.md` (expanded Spec Protocol spec; clearer non-ephemeral planning)
-- `CONSENT_CHECKLIST.md` (added pre-change analysis requirement; reordered workflow)
-- `STANDARDS_CORE.md` (reference to Spec Protocol)
+- `.github/instructions/orchestration.instructions.md` (expanded Spec Protocol spec; clearer non-ephemeral planning)
+- `Consent Checklist (.github/skills/internal-governance/SKILL.md)` (added pre-change analysis requirement; reordered workflow)
+- `.github/instructions/general-coding.instructions.md` (reference to Spec Protocol)
 - `PROJECT_CONTEXT.md` (governance section)
-- `MIGRATION_TEMPLATE.md` (agent planning section added)
+- `Migration Template (.github/skills/templates/SKILL.md)` (agent planning section added)
 
 ### No Breaking Changes
 - Existing user consent workflow preserved; enhanced with written specs
-- Backward compatible with current CONSENT_CHECKLIST.md usage
+- Backward compatible with current Consent Checklist usage
 - Scope exceptions allow minor work to proceed without plans
 
 ---
@@ -360,7 +360,7 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 - Repository: New `.github/prompts/` patterns establish durable checkpoint precedent
 
 **Risks:**
-- Overhead if scope exceptions not clearly defined (mitigated: exceptions listed in SPEC_PROTOCOL.md)
+- Overhead if scope exceptions not clearly defined (mitigated: exceptions listed in .github/instructions/spec-protocol.instructions.md)
 - Learning curve for agents following new pattern (mitigated: clear examples and templates)
 
 **Rollback:** If governance changes prove too rigid, exceptions can be expanded or protocol simplified. Existing plan artifacts remain as audit trail.
@@ -371,11 +371,11 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 
 1. ✓ **Plan Complete:** This spec document is written and ready for approval
 2. ✓ **Approve:** User confirmed "Proceed with Spec Protocol refactoring"
-3. ✓ **Stage 1:** SPEC_PROTOCOL.md created with full spec
-4. ✓ **Stage 2:** STANDARDS_ORCHESTRATION.md updated with Spec Protocol integration
-5. ✓ **Stage 3:** CONSENT_CHECKLIST.md updated with Pre-Change Analysis section
-6. ✓ **Stage 4:** STANDARDS_CORE.md, PROJECT_CONTEXT.md updated; standards aligned
-7. ✓ **Stage 5:** MIGRATION_TEMPLATE.md extended with Agent Planning section
+3. ✓ **Stage 1:** .github/instructions/spec-protocol.instructions.md created with full spec
+4. ✓ **Stage 2:** .github/instructions/orchestration.instructions.md updated with Spec Protocol integration
+5. ✓ **Stage 3:** Consent Checklist updated with Pre-Change Analysis section
+6. ✓ **Stage 4:** .github/instructions/general-coding.instructions.md, PROJECT_CONTEXT.md updated; standards aligned
+7. ✓ **Stage 5:** Migration Template extended with Agent Planning section
 8. ✓ **Stage 6:** Plan artifact linked to implementation; this plan serves as audit trail
 
 ---
@@ -386,14 +386,14 @@ The current STANDARDS_ORCHESTRATION.md contains vague and conflicting guidance t
 
 The Spec Protocol refactoring has been implemented across all governance files:
 
-- **SPEC_PROTOCOL.md** (new): Complete reference guide for explicit state reification
-- **STANDARDS_ORCHESTRATION.md** (updated): Integrated Spec Protocol with cross-references
-- **CONSENT_CHECKLIST.md** (updated): Workflow reordered to require pre-change analysis
-- **STANDARDS_CORE.md** (updated): Added Spec Protocol requirement to core values
+- **.github/instructions/spec-protocol.instructions.md** (new): Complete reference guide for explicit state reification
+- **.github/instructions/orchestration.instructions.md** (updated): Integrated Spec Protocol with cross-references
+- **Consent Checklist (.github/skills/internal-governance/SKILL.md)** (updated): Workflow reordered to require pre-change analysis
+- **.github/instructions/general-coding.instructions.md** (updated): Added Spec Protocol requirement to core values
 - **PROJECT_CONTEXT.md** (updated): Added governance section with links
-- **MIGRATION_TEMPLATE.md** (updated): Added agent planning section
-- **STANDARDS_BASH.md** (reviewed): No conflicts identified
-- **STANDARDS_POWERSHELL.md** (reviewed): No conflicts identified
+- **Migration Template (.github/skills/templates/SKILL.md)** (updated): Added agent planning section
+- **.github/instructions/bash.instructions.md** (reviewed): No conflicts identified
+- **.github/instructions/powershell.instructions.md** (reviewed): No conflicts identified
 
 **Key Outcomes:**
 
@@ -406,8 +406,8 @@ The Spec Protocol refactoring has been implemented across all governance files:
 7. **Clear Exemptions:** Minor edits (typos, syntax, comment fixes) may proceed without plans
 
 **Cross-References Working:**
-- SPEC_PROTOCOL.md linked from STANDARDS_ORCHESTRATION.md, CONSENT_CHECKLIST.md, PROJECT_CONTEXT.md
-- All governance files mention SPEC_PROTOCOL.md in references sections
+- .github/instructions/spec-protocol.instructions.md linked from .github/instructions/orchestration.instructions.md, Consent Checklist, PROJECT_CONTEXT.md
+- All governance files mention spec-protocol instructions in references sections
 - Hard gate workflow is discoverable and actionable
 
 ---
@@ -424,7 +424,7 @@ This plan artifact demonstrates the Spec Protocol in practice:
 
 ## REFERENCES
 
-- **Current:** STANDARDS_ORCHESTRATION.md §3–4 (vague Spec Protocol mention)
-- **Current:** CONSENT_CHECKLIST.md (reactive approval pattern)
-- **Current:** MIGRATION_TEMPLATE.md (user-facing only)
+- **Current:** .github/instructions/orchestration.instructions.md §3–4 (vague Spec Protocol mention)
+- **Current:** Consent Checklist (reactive approval pattern)
+- **Current:** Migration Template (user-facing only)
 - **Target:** Integrated Spec Protocol with durable planning artifacts and explicit approval gates

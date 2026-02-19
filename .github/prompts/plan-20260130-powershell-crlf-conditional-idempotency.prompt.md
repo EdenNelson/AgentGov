@@ -22,7 +22,7 @@ The standard must reflect conditional CRLF usage rather than a blanket mandate.
 
 ### Current State
 
-- STANDARDS_POWERSHELL.md mandates CRLF universally.
+- .github/instructions/powershell.instructions.md mandates CRLF universally.
 - Legacy PowerShell 5.1 exists, but CRLF is only required in specific contexts (GPO/DSC or explicitly stated requirements).
 
 ### Constraints
@@ -45,7 +45,7 @@ Adopt a **conditional CRLF policy**:
 
 ## Plan
 
-### STAGE 1: Update STANDARDS_POWERSHELL.md (Policy Shift)
+### STAGE 1: Update .github/instructions/powershell.instructions.md (Policy Shift)
 
 **Objective:** Make idempotency the default and CRLF conditional
 
@@ -56,7 +56,7 @@ Adopt a **conditional CRLF policy**:
 - [ ] Add clear triggers for CRLF usage
 - [ ] Add explicit note: PowerShell 7+ accepts LF/CRLF; 5.1 may require CRLF in specific contexts
 
-**Checkpoint:** STANDARDS_POWERSHELL.md updated and reviewed
+**Checkpoint:** .github/instructions/powershell.instructions.md updated and reviewed
 
 ### STAGE 2: Update ADRs
 
@@ -96,7 +96,7 @@ Adopt a **conditional CRLF policy**:
 
 ## References
 
-- [STANDARDS_POWERSHELL.md](../../STANDARDS_POWERSHELL.md)
-- [STANDARDS_CORE.md](../../STANDARDS_CORE.md) (idempotency principle)
+- [.github/instructions/powershell.instructions.md](../../.github/instructions/powershell.instructions.md)
+- [.github/instructions/general-coding.instructions.md](../../.github/instructions/general-coding.instructions.md) (idempotency principle)
 - [ADR-0018](../../.github/adr/0018-powershell-crlf-legacy-compatibility.md)
-- [SPEC_PROTOCOL.md](../../SPEC_PROTOCOL.md)
+- [.github/instructions/spec-protocol.instructions.md](../../.github/instructions/spec-protocol.instructions.md)

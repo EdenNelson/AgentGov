@@ -14,16 +14,16 @@ A direct contradiction exists between two governance documents about exemptions 
 1. **.github/copilot-instructions.md** (Automatic Governance Hard Gate):
    - Section: "No Exemptions"
    - States: "Typos in governance files: **Require a plan**"
-   - Scope: Applies to all governance files (PERSONA.md, STANDARDS_*.md, etc.)
+  - Scope: Applies to all governance files (.github/agents/*.agent.md, .github/instructions/*.instructions.md, .github/skills/*/SKILL.md, etc.)
    - **Message:** "Governance changes are never 'small' — they affect the framework and all downstream consumers. All modifications must be auditable and durable."
 
-2. **SPEC_PROTOCOL.md §3.3** (Exempt Changes):
+2. **.github/instructions/spec-protocol.instructions.md §3.3** (Exempt Changes):
    - Section: "Exempt Changes (No Plan Required)"
    - States: "**Syntax fixes:** Correcting typos, formatting, indentation (no behavior change)"
    - Lists: "Minor changes that may proceed **without** a persisted plan"
    - **Scope:** Appears to be universal (includes governance files by implication)
 
-**The Contradiction:** Which rule applies to a typo in STANDARDS_POWERSHELL.md? Does the Hard Gate's "No Exemptions" override SPEC_PROTOCOL's exemption list?
+**The Contradiction:** Which rule applies to a typo in .github/instructions/powershell.instructions.md? Does the Hard Gate's "No Exemptions" override spec-protocol instructions exemption list?
 
 **Impact:**
 - Agents are confused about when to create plans for governance edits
@@ -37,7 +37,7 @@ A direct contradiction exists between two governance documents about exemptions 
 
 ### Current State
 
-**SPEC_PROTOCOL.md §3.3 Exemptions (Line ~325):**
+**.github/instructions/spec-protocol.instructions.md §3.3 Exemptions (Line ~325):**
 ```
 Exempt Changes (No Plan Required)
 
@@ -52,7 +52,7 @@ Rule of Thumb: If the change could affect any user-facing surface, workflow, API
 output format — create a plan. When in doubt, create a plan.
 ```
 
-**Interpretation:** SPEC_PROTOCOL.md exempts minor edits **broadly**, implying governance files are included (since governance is "documentation" and "guidance").
+**Interpretation:** .github/instructions/spec-protocol.instructions.md exempts minor edits **broadly**, implying governance files are included (since governance is "documentation" and "guidance").
 
 **.github/copilot-instructions.md (Hard Gate):**
 ```
@@ -70,13 +70,13 @@ output format — create a plan. When in doubt, create a plan.
 
 **Why the contradiction exists:**
 
-1. **SPEC_PROTOCOL.md was written first** (early governance framework) with broad exemptions
+1. **.github/instructions/spec-protocol.instructions.md was written first** (early governance framework) with broad exemptions
 2. **.github/copilot-instructions.md was written later** (RULE #0 hardening) to add strict governance protection
 3. **The conflict was not resolved** — both documents exist, creating confusion
 
 ### The Principle Clash
 
-**SPEC_PROTOCOL.md Principle:**
+**.github/instructions/spec-protocol.instructions.md Principle:**
 > "If the change could affect any user-facing surface... create a plan. When in doubt, create a plan."
 
 **Implication:** Typos in governance are "minor" and do not affect user-facing surfaces; exempt.
@@ -90,7 +90,7 @@ output format — create a plan. When in doubt, create a plan.
 
 **Both principles have merit:**
 
-- **SPEC_PROTOCOL.md is correct:** For code (scripts, configs), typos are low-risk and can be fixed without plans
+- **.github/instructions/spec-protocol.instructions.md is correct:** For code (scripts, configs), typos are low-risk and can be fixed without plans
 - **.github/copilot-instructions.md is correct:** For governance, even typos are high-risk because downstream consumers rely on governance as their source of truth
 
 **The Resolution:** Governance files are special and deserve their own exemption rules. They should not follow the same exemption logic as code.
@@ -99,12 +99,12 @@ output format — create a plan. When in doubt, create a plan.
 
 ## Plan
 
-### STAGE 1: Clarify SPEC_PROTOCOL.md — Add Governance Scope Clarification
+### STAGE 1: Clarify .github/instructions/spec-protocol.instructions.md — Add Governance Scope Clarification
 
-**Objective:** Update SPEC_PROTOCOL.md §3.3 to explicitly exclude governance files from exemptions
+**Objective:** Update .github/instructions/spec-protocol.instructions.md §3.3 to explicitly exclude governance files from exemptions
 
 **Deliverables:**
-- [ ] SPEC_PROTOCOL.md §3.3, add clarification before "Exempt Changes" heading:
+- [ ] .github/instructions/spec-protocol.instructions.md §3.3, add clarification before "Exempt Changes" heading:
 
 ```markdown
 ### 3.3 Exempt Changes (No Plan Required) — CODE ONLY
@@ -121,16 +121,16 @@ Minor changes that may proceed without a persisted plan:
 ...
 ```
 
-**Checkpoint:** SPEC_PROTOCOL.md clarified and reviewed
+**Checkpoint:** .github/instructions/spec-protocol.instructions.md clarified and reviewed
 
 ### STAGE 2: Update .github/copilot-instructions.md — Cross-Link and Clarify
 
-**Objective:** Make the Hard Gate more explicit and cross-link to SPEC_PROTOCOL.md
+**Objective:** Make the Hard Gate more explicit and cross-link to .github/instructions/spec-protocol.instructions.md
 
 **Deliverables:**
 - [ ] .github/copilot-instructions.md, Hard Gate section, add:
-  - Cross-reference to SPEC_PROTOCOL.md §3.3
-  - Clarify: "This rule applies **only to governance files**. For code files, see SPEC_PROTOCOL.md §3.3 Exempt Changes."
+  - Cross-reference to .github/instructions/spec-protocol.instructions.md §3.3
+  - Clarify: "This rule applies **only to governance files**. For code files, see .github/instructions/spec-protocol.instructions.md §3.3 Exempt Changes."
   - Rationale: "Governance files are the source of truth for downstream consumers. All changes must be durable, auditable, and traced."
 
 **Checkpoint:** copilot-instructions.md updated and reviewed
@@ -140,13 +140,13 @@ Minor changes that may proceed without a persisted plan:
 **Objective:** Provide agents with a simple decision tree
 
 **Deliverable:**
-- [ ] Add section to either SPEC_PROTOCOL.md or .github/copilot-instructions.md:
+- [ ] Add section to either .github/instructions/spec-protocol.instructions.md or .github/copilot-instructions.md:
 
 ```markdown
 ## Quick Decision Tree: Do I Need a Plan?
 
 1. **What am I editing?**
-   - [ ] A governance file (PERSONA.md, STANDARDS_*.md, SPEC_PROTOCOL.md, etc.)
+  - [ ] A governance file (.github/agents/*.agent.md, .github/instructions/*.instructions.md, .github/skills/*/SKILL.md, etc.)
        → **YES, create a plan** (even for typos)
    - [ ] A code file (*.ps1, *.sh, *.py, config, etc.)
        → Go to step 2
@@ -165,7 +165,7 @@ Minor changes that may proceed without a persisted plan:
 **Objective:** Verify agents understand the governance hard gate
 
 **Deliverable:**
-- [ ] Create prompt: "Fix a typo in STANDARDS_POWERSHELL.md (change 'Powershell' to 'PowerShell')"
+- [ ] Create prompt: "Fix a typo in .github/instructions/powershell.instructions.md (change 'Powershell' to 'PowerShell')"
 - [ ] Load updated governance
 - [ ] Verify agent:
   - Recognizes this is a governance file edit
@@ -193,7 +193,7 @@ Minor changes that may proceed without a persisted plan:
 - **Durability:** Improved; all governance changes are tracked and auditable
 
 **Migration Path:**
-- Agents reading old guidance (SPEC_PROTOCOL.md without clarification) may mistakenly apply code exemptions to governance
+- Agents reading old guidance (.github/instructions/spec-protocol.instructions.md without clarification) may mistakenly apply code exemptions to governance
 - New agents reading updated guidance will get it right
 - No breaking change to consumers; only clarifies internal process
 
@@ -207,7 +207,7 @@ Minor changes that may proceed without a persisted plan:
 
 ## References
 
-- [SPEC_PROTOCOL.md](../../SPEC_PROTOCOL.md) §3.3 (current exemptions)
+- [.github/instructions/spec-protocol.instructions.md](../../.github/instructions/spec-protocol.instructions.md) §3.3 (current exemptions)
 - [.github/copilot-instructions.md](../../.github/copilot-instructions.md) (Hard Gate section)
-- [STANDARDS_CORE.md](../../STANDARDS_CORE.md) §1.1 (Correctness, Clarity principle)
+- [.github/instructions/general-coding.instructions.md](../../.github/instructions/general-coding.instructions.md) §1.1 (Correctness, Clarity principle)
 

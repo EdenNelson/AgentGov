@@ -9,7 +9,7 @@
 
 ## Problem Statement
 
-STANDARDS_POWERSHELL.md mandates CRLF for all PowerShell files but does not explicitly document **why**. This creates confusion, especially in cross-platform contexts where PowerShell 7+ accepts LF. The real constraint is **legacy Windows PowerShell 5.1**, particularly for **Group Policy startup/shutdown scripts** and **DSC** scenarios.
+.github/instructions/powershell.instructions.md mandates CRLF for all PowerShell files but does not explicitly document **why**. This creates confusion, especially in cross-platform contexts where PowerShell 7+ accepts LF. The real constraint is **legacy Windows PowerShell 5.1**, particularly for **Group Policy startup/shutdown scripts** and **DSC** scenarios.
 
 **Gap:** The rule is correct but under-specified. It needs explicit rationale and scope so agents do not misdiagnose LF as the root cause or incorrectly propose removing CRLF.
 
@@ -19,7 +19,7 @@ STANDARDS_POWERSHELL.md mandates CRLF for all PowerShell files but does not expl
 
 ### Current State
 
-- STANDARDS_POWERSHELL.md says CRLF is mandatory for all PowerShell files.
+- .github/instructions/powershell.instructions.md says CRLF is mandatory for all PowerShell files.
 - The rationale mentions Windows execution and orchestration (DSC, GPO, WinRM), but does not clearly tie the mandate to **PowerShell 5.1 legacy requirements**.
 - This leads to contradictions with cross-platform idempotency discussions and agent debugging guidance.
 
@@ -50,7 +50,7 @@ Clarify the CRLF rule by adding explicit rationale that:
 
 ## Plan
 
-### STAGE 1: Update STANDARDS_POWERSHELL.md — Add Explicit Legacy Rationale
+### STAGE 1: Update .github/instructions/powershell.instructions.md — Add Explicit Legacy Rationale
 
 **Objective:** Make the CRLF mandate unambiguous and tied to PowerShell 5.1 legacy requirements
 
@@ -61,7 +61,7 @@ Clarify the CRLF rule by adding explicit rationale that:
   - PowerShell 7+ accepts both, but CRLF is mandatory due to legacy requirements
 - [ ] Ensure wording is precise and avoids implying CRLF is optional
 
-**Checkpoint:** STANDARDS_POWERSHELL.md updated and reviewed
+**Checkpoint:** .github/instructions/powershell.instructions.md updated and reviewed
 
 ### STAGE 2: Update ADR (If Required)
 
@@ -81,7 +81,7 @@ Clarify the CRLF rule by adding explicit rationale that:
 
 **User Approval Requested:**
 1. Confirm the rationale: CRLF is mandatory primarily for PowerShell 5.1 legacy compatibility (GPO/DSC).
-2. Approve adding explicit rationale language to STANDARDS_POWERSHELL.md.
+2. Approve adding explicit rationale language to .github/instructions/powershell.instructions.md.
 
 **Approved:** [x] Eden Nelson on January 30, 2026
 
@@ -89,6 +89,6 @@ Clarify the CRLF rule by adding explicit rationale that:
 
 ## References
 
-- [STANDARDS_POWERSHELL.md](../../STANDARDS_POWERSHELL.md) (CRLF mandate)
-- [SPEC_PROTOCOL.md](../../SPEC_PROTOCOL.md) (plan requirement for governance changes)
+- [.github/instructions/powershell.instructions.md](../../.github/instructions/powershell.instructions.md) (CRLF mandate)
+- [.github/instructions/spec-protocol.instructions.md](../../.github/instructions/spec-protocol.instructions.md) (plan requirement for governance changes)
 - [ADR-0005](../../.github/adr/0005-powershell-windows-compatibility.md) (related Windows compatibility guidance)

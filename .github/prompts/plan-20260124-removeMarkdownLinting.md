@@ -31,7 +31,7 @@ Remove all linting infrastructure and replace with simple directive: "Generate a
 
 ## FILES TO MODIFY
 
-### STANDARDS_CORE.md
+### .github/instructions/general-coding.instructions.md
 
 **Remove:** Section 1.3 "Markdown Compliance Checklist" (entire section, ~200 tokens)
 
@@ -51,7 +51,7 @@ All markdown files must follow CommonMark specification. Key requirements:
 **Benefits:**
 
 - Removes process overhead
-- Simplifies governance (200 tokens saved in STANDARDS_CORE)
+- Simplifies governance (200 tokens saved in .github/instructions/general-coding.instructions.md)
 - Forces correct behavior instead of catching errors
 
 **Risks:**
@@ -64,7 +64,7 @@ All markdown files must follow CommonMark specification. Key requirements:
 ## EXECUTION STEPS
 
 1. Delete 5 files listed above
-2. Update STANDARDS_CORE.md to remove checklist, add simple directive
+2. Update .github/instructions/general-coding.instructions.md to remove checklist, add simple directive
 3. Verify no other files reference the linting infrastructure
 
 ---

@@ -9,7 +9,7 @@
 
 ## EXECUTIVE SUMMARY
 
-Analysis of all governance files reveals **8 critical hard references** that force premature file loading, breaking the dynamic chain-load architecture. Key issues: (1) SPEC_PROTOCOL.md references 4 other files, forcing them to load; (2) Circular dependencies between CONSENT_CHECKLIST.md and SPEC_PROTOCOL.md; (3) Orphaned files with no clear activation trigger. Remediation requires converting hard references to conditional chain metadata and defining DO NOT LOAD UNTIL conditions for all standards files.
+Analysis of all governance files reveals **8 critical hard references** that force premature file loading, breaking the dynamic chain-load architecture. Key issues: (1) .github/instructions/spec-protocol.instructions.md references 4 other files, forcing them to load; (2) Circular dependencies between Consent Checklist (.github/skills/internal-governance/SKILL.md) and .github/instructions/spec-protocol.instructions.md; (3) Orphaned files with no clear activation trigger. Remediation requires converting hard references to conditional chain metadata and defining DO NOT LOAD UNTIL conditions for all standards files.
 
 ---
 
@@ -17,54 +17,54 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 ### Cross-File Reference Analysis
 
-#### SPEC_PROTOCOL.md
+#### .github/instructions/spec-protocol.instructions.md
 
 **Hard References:**
-- References: STANDARDS_ORCHESTRATION.md, STANDARDS_CORE.md, CONSENT_CHECKLIST.md, MIGRATION_TEMPLATE.md
-- Impact: **BREAKS chain-load model** — Forces these 4 files to load when SPEC_PROTOCOL.md loads
+- References: .github/instructions/orchestration.instructions.md, .github/instructions/general-coding.instructions.md, Consent Checklist (.github/skills/internal-governance/SKILL.md), Migration Template (.github/skills/templates/SKILL.md)
+- Impact: **BREAKS chain-load model** — Forces these 4 files to load when .github/instructions/spec-protocol.instructions.md loads
 - Current Behavior: Reader encounters references; agent must ingest referenced files to understand context
-- Chain-Load Conflict: SPEC_PROTOCOL.md is TIER 0 (always load), but shouldn't force TIER 2 files (governance phase-specific)
+- Chain-Load Conflict: .github/instructions/spec-protocol.instructions.md is TIER 0 (always load), but shouldn't force TIER 2 files (governance phase-specific)
 - Status: [WARNING] **CRITICAL** — Needs remediation
 
 **Remediation Approach:**
-- Convert hard references (`See CONSENT_CHECKLIST.md`) to chain metadata (`CHAINS TO: CONSENT_CHECKLIST.md when breaking change detected`)
-- Replace static link with: "For breaking changes, CONSENT_CHECKLIST.md chains automatically when breaking change is detected"
+- Convert hard references (`See Consent Checklist`) to chain metadata (`CHAINS TO: Consent Checklist when breaking change detected`)
+- Replace static link with: "For breaking changes, Consent Checklist chains automatically when breaking change is detected"
 
 ---
 
-#### STANDARDS_ORCHESTRATION.md
+#### .github/instructions/orchestration.instructions.md
 
 **Hard References:**
-- References: STANDARDS_CORE.md (acceptable), CONSENT_CHECKLIST.md (problematic)
-- Impact: **BREAKS chain-load model** — Forces CONSENT_CHECKLIST.md to load prematurely
-- Current Behavior: "See CONSENT_CHECKLIST.md for a ready-to-use prompt" forces file load
-- Chain-Load Conflict: STANDARDS_ORCHESTRATION.md is TIER 2 (governance phase), but shouldn't force CONSENT_CHECKLIST.md to pre-load
+- References: .github/instructions/general-coding.instructions.md (acceptable), Consent Checklist (.github/skills/internal-governance/SKILL.md) (problematic)
+- Impact: **BREAKS chain-load model** — Forces the Consent Checklist to load prematurely
+- Current Behavior: "See Consent Checklist for a ready-to-use prompt" forces file load
+- Chain-Load Conflict: .github/instructions/orchestration.instructions.md is TIER 2 (governance phase), but shouldn't force the Consent Checklist to pre-load
 - Status: [WARNING] **HIGH** — Needs remediation
 
 **Remediation Approach:**
-- Convert to: "When breaking change is proposed, CONSENT_CHECKLIST.md chains automatically"
+- Convert to: "When breaking change is proposed, Consent Checklist chains automatically"
 - Define DO NOT LOAD UNTIL: `breaking_change_detected`
 
 ---
 
-#### CONSENT_CHECKLIST.md
+#### Consent Checklist (.github/skills/internal-governance/SKILL.md)
 
 **Hard References:**
-- References: MIGRATION_TEMPLATE.md, SPEC_PROTOCOL.md
+- References: Migration Template (.github/skills/templates/SKILL.md), .github/instructions/spec-protocol.instructions.md
 - Impact: **BREAKS chain-load model** — Circular dependency risk
-- Current Behavior: CONSENT_CHECKLIST.md is only referenced by other files; no independent entry point
-- Chain-Load Conflict: File cannot be loaded without triggering SPEC_PROTOCOL.md again (circular load)
+- Current Behavior: Consent Checklist is only referenced by other files; no independent entry point
+- Chain-Load Conflict: File cannot be loaded without triggering .github/instructions/spec-protocol.instructions.md again (circular load)
 - Orphaned Status: No work phase triggers this file directly
 - Status: [WARNING] **CRITICAL** — Needs remediation + explicit trigger definition
 
 **Remediation Approach:**
 - Define DO NOT LOAD UNTIL: `breaking_change_proposed`
-- Replace hard reference to SPEC_PROTOCOL.md with: "Assumes SPEC_PROTOCOL.md context; triggers after hard gate approval"
-- Add metadata: `CHAINS TO: MIGRATION_TEMPLATE.md (when user confirms breaking change implementation)`
+- Replace hard reference to .github/instructions/spec-protocol.instructions.md with: "Assumes spec-protocol context; triggers after hard gate approval"
+- Add metadata: `CHAINS TO: Migration Template (when user confirms breaking change implementation)`
 
 ---
 
-#### STANDARDS_CORE.md
+#### .github/instructions/general-coding.instructions.md
 
 **Hard References:**
 - References: None detected
@@ -74,40 +74,40 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 ---
 
-#### STANDARDS_BASH.md
+#### .github/instructions/bash.instructions.md
 
 **Hard References:**
-- References: STANDARDS_CORE.md
+- References: .github/instructions/general-coding.instructions.md
 - Impact: [WARNING] **EXPECTED** — Language-specific files should chain to core standards
 - Chain-Load Status: Acceptable; expected parent-child relationship
-- Status: [COMPLETE] Acceptable; may need metadata for clarity: `CHAINS FROM: STANDARDS_CORE.md (when bash detected)`
+- Status: [COMPLETE] Acceptable; may need metadata for clarity: `CHAINS FROM: .github/instructions/general-coding.instructions.md (when bash detected)`
 
 ---
 
-#### STANDARDS_POWERSHELL.md
+#### .github/instructions/powershell.instructions.md
 
 **Hard References:**
-- References: STANDARDS_CORE.md
+- References: .github/instructions/general-coding.instructions.md
 - Impact: [WARNING] **EXPECTED** — Language-specific files should chain to core standards
 - Chain-Load Status: Acceptable; expected parent-child relationship
-- Status: [COMPLETE] Acceptable; may need metadata for clarity: `CHAINS FROM: STANDARDS_CORE.md (when powershell detected)`
+- Status: [COMPLETE] Acceptable; may need metadata for clarity: `CHAINS FROM: .github/instructions/general-coding.instructions.md (when powershell detected)`
 
 ---
 
-#### MIGRATION_TEMPLATE.md
+#### Migration Template (.github/skills/templates/SKILL.md)
 
 **Hard References:**
-- References: SPEC_PROTOCOL.md
-- Impact: [WARNING] **CREATES CIRCULAR DEPENDENCY** — References SPEC_PROTOCOL.md, which references MIGRATION_TEMPLATE.md
+- References: .github/instructions/spec-protocol.instructions.md
+- Impact: [WARNING] **CREATES CIRCULAR DEPENDENCY** — References spec-protocol instructions, which references the Migration Template
 - Current Behavior: Template file with hard reference to parent governance
 - Chain-Load Conflict: Circular load risk; unclear activation trigger
 - Orphaned Status: No work phase directly triggers this template
 - Status: [WARNING] **MEDIUM** — Needs remediation + trigger definition
 
 **Remediation Approach:**
-- Convert hard reference to: "Used when implementing breaking changes per SPEC_PROTOCOL.md hard gate"
+- Convert hard reference to: "Used when implementing breaking changes per spec-protocol hard gate"
 - Define DO NOT LOAD UNTIL: `breaking_change_implementation_phase`
-- Add metadata: `CHAINS FROM: CONSENT_CHECKLIST.md (when user approves breaking change)`
+- Add metadata: `CHAINS FROM: Consent Checklist (when user approves breaking change)`
 
 ---
 
@@ -121,7 +121,7 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 ---
 
-#### PERSONA.md
+#### .github/agents/architect.agent.md
 
 **Hard References:**
 - References: None (foundational)
@@ -133,38 +133,38 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 ## Orphaned Files Analysis
 
-### CONSENT_CHECKLIST.md
+### Consent Checklist (.github/skills/internal-governance/SKILL.md)
 
 **Status:** Orphaned — No clear entry point
 
 **Current Situation:**
-- Referenced BY: SPEC_PROTOCOL.md, STANDARDS_ORCHESTRATION.md, MIGRATION_TEMPLATE.md
-- Referenced FROM: Nothing (no file initiates load of CONSENT_CHECKLIST.md)
+- Referenced BY: .github/instructions/spec-protocol.instructions.md, .github/instructions/orchestration.instructions.md, Migration Template (.github/skills/templates/SKILL.md)
+- Referenced FROM: Nothing (no file initiates load of the Consent Checklist)
 - Activation Trigger: Undefined — File only loads if reader encounters references to it
 
 **Chain-Load Problem:** In lazy-load model, this file never loads unless explicitly requested or inbound reference is processed.
 
 **Solution:** Define explicit DO NOT LOAD UNTIL condition:
 - `DO NOT LOAD UNTIL: breaking_change_proposed`
-- Metadata entry point: "When user proposes breaking/major change, CONSENT_CHECKLIST.md chains automatically"
+- Metadata entry point: "When user proposes breaking/major change, Consent Checklist chains automatically"
 
 ---
 
-### MIGRATION_TEMPLATE.md
+### Migration Template (.github/skills/templates/SKILL.md)
 
 **Status:** Orphaned — Template file with undefined activation
 
 **Current Situation:**
-- Referenced BY: CONSENT_CHECKLIST.md (hard reference)
-- Referenced FROM: Nothing (no file initiates load of MIGRATION_TEMPLATE.md)
-- Activation Trigger: Undefined — Template only loads if CONSENT_CHECKLIST.md is loaded
+- Referenced BY: Consent Checklist (hard reference)
+- Referenced FROM: Nothing (no file initiates load of the Migration Template)
+- Activation Trigger: Undefined — Template only loads if the Consent Checklist is loaded
 - Purpose: Guidance document for implementing breaking changes
 
 **Chain-Load Problem:** File is a template/guide, not an active governance rule. Unclear if it should load automatically or only on-demand.
 
 **Solution:** Define explicit DO NOT LOAD UNTIL condition:
 - `DO NOT LOAD UNTIL: breaking_change_implementation_phase`
-- Metadata: "Chains from CONSENT_CHECKLIST.md when user approves breaking change"
+- Metadata: "Chains from Consent Checklist when user approves breaking change"
 - Purpose: Guidance template, loads when user implements approved breaking change
 
 ---
@@ -173,9 +173,9 @@ Analysis of all governance files reveals **8 critical hard references** that for
 
 | Issue | Files Affected | Severity | Action Required |
 | --- | --- | --- | --- |
-| Static hard references (forced load) | SPEC_PROTOCOL.md, STANDARDS_ORCHESTRATION.md, CONSENT_CHECKLIST.md, MIGRATION_TEMPLATE.md | HIGH | Convert all to conditional chain metadata |
-| Circular dependencies | CONSENT_CHECKLIST.md ↔ SPEC_PROTOCOL.md, MIGRATION_TEMPLATE.md ↔ SPEC_PROTOCOL.md | MEDIUM | Restructure references; eliminate circular paths |
-| Orphaned entry points | CONSENT_CHECKLIST.md, MIGRATION_TEMPLATE.md | MEDIUM | Define explicit DO NOT LOAD UNTIL conditions for both |
+| Static hard references (forced load) | .github/instructions/spec-protocol.instructions.md, .github/instructions/orchestration.instructions.md, Consent Checklist, Migration Template | HIGH | Convert all to conditional chain metadata |
+| Circular dependencies | Consent Checklist ↔ spec-protocol instructions, Migration Template ↔ spec-protocol instructions | MEDIUM | Restructure references; eliminate circular paths |
+| Orphaned entry points | Consent Checklist, Migration Template | MEDIUM | Define explicit DO NOT LOAD UNTIL conditions for both |
 | Missing load metadata | All standards files | HIGH | Add LOAD METADATA section to every file |
 
 ---
@@ -200,12 +200,12 @@ Every standards file must declare:
 
 **Current Pattern (BREAKS chain-load):**
 ```markdown
-See CONSENT_CHECKLIST.md for approval gate details.
+See Consent Checklist for approval gate details.
 ```
 
 **New Pattern (Chain-load friendly):**
 ```markdown
-When breaking change is proposed, CONSENT_CHECKLIST.md chains automatically.
+When breaking change is proposed, Consent Checklist chains automatically.
 (LOAD METADATA: DO NOT LOAD UNTIL: breaking_change_proposed)
 ```
 
@@ -213,44 +213,44 @@ When breaking change is proposed, CONSENT_CHECKLIST.md chains automatically.
 
 **Current State:**
 ```
-SPEC_PROTOCOL.md → references CONSENT_CHECKLIST.md
-CONSENT_CHECKLIST.md → references SPEC_PROTOCOL.md (circular)
+.github/instructions/spec-protocol.instructions.md → references Consent Checklist
+Consent Checklist → references spec-protocol instructions (circular)
 ```
 
 **Resolved State:**
 ```
-SPEC_PROTOCOL.md (TIER 0):
-  └─ Explains hard gate; chains to CONSENT_CHECKLIST.md when breaking change detected
+.github/instructions/spec-protocol.instructions.md (TIER 0):
+   └─ Explains hard gate; chains to Consent Checklist when breaking change detected
 
-CONSENT_CHECKLIST.md (TIER 2):
-  └─ Assumes SPEC_PROTOCOL.md context (already loaded); no reference back
+Consent Checklist (TIER 2):
+   └─ Assumes spec-protocol instructions context (already loaded); no reference back
 ```
 
-Remove back-reference from CONSENT_CHECKLIST.md to SPEC_PROTOCOL.md; assume it's already loaded by chain.
+Remove back-reference from Consent Checklist to spec-protocol instructions; assume it's already loaded by chain.
 
 ### Phase 4: Define Orphan Activation Triggers
 
-**CONSENT_CHECKLIST.md:**
+**Consent Checklist:**
 - DO NOT LOAD UNTIL: `breaking_change_proposed`
-- Chains from: STANDARDS_ORCHESTRATION.md (when governance phase begins)
+- Chains from: .github/instructions/orchestration.instructions.md (when governance phase begins)
 
-**MIGRATION_TEMPLATE.md:**
+**Migration Template:**
 - DO NOT LOAD UNTIL: `breaking_change_implementation_approved`
-- Chains from: CONSENT_CHECKLIST.md (after user approval)
+- Chains from: Consent Checklist (after user approval)
 
 ---
 
 ## Implementation Order
 
-1. **Add LOAD METADATA to TIER 0 files** (PERSONA.md, PROJECT_CONTEXT.md, SPEC_PROTOCOL.md, STANDARDS_CORE.md)
+1. **Add LOAD METADATA to TIER 0 files** (.github/agents/architect.agent.md, PROJECT_CONTEXT.md, .github/instructions/spec-protocol.instructions.md, .github/instructions/general-coding.instructions.md)
    - Declare `TIER: 0`, `DO NOT LOAD UNTIL: N/A`
-   - Update SPEC_PROTOCOL.md: Declare chains to governance files (don't hard-reference)
+   - Update .github/instructions/spec-protocol.instructions.md: Declare chains to governance files (don't hard-reference)
 
-2. **Add LOAD METADATA to TIER 1 files** (STANDARDS_BASH.md, STANDARDS_POWERSHELL.md)
+2. **Add LOAD METADATA to TIER 1 files** (.github/instructions/bash.instructions.md, .github/instructions/powershell.instructions.md)
    - Declare `TIER: 1`, `DO NOT LOAD UNTIL: [language detected]`
-   - Declare `CHAINS FROM: STANDARDS_CORE.md`
+   - Declare `CHAINS FROM: .github/instructions/general-coding.instructions.md`
 
-3. **Add LOAD METADATA to TIER 2 files** (STANDARDS_ORCHESTRATION.md, CONSENT_CHECKLIST.md, MIGRATION_TEMPLATE.md)
+3. **Add LOAD METADATA to TIER 2 files** (.github/instructions/orchestration.instructions.md, Consent Checklist, Migration Template)
    - Declare `TIER: 2`, `DO NOT LOAD UNTIL: [governance phase]`
    - Resolve circular references
 
