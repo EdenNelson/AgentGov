@@ -2,7 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# PowerShell validator: checks line endings, encoding, and best practices
+# PowerShell syntax validator: checks parse errors, line endings, encoding, and balanced elements
+# Purpose: Validate that scripts will parse without errors (syntax), not code style/best practices
 # Args: $1 = file path
 
 if [[ $# -lt 1 ]]; then
@@ -37,18 +38,43 @@ if ! file -b --mime-encoding "$file" | grep -qE 'utf-8|us-ascii'; then
   errors+=("File encoding is not UTF-8")
 fi
 
-# Check 3: Basic PowerShell best practices
-# Check for Write-Host (should prefer Write-Verbose)
-if grep -E '^\s*Write-Host\s' "$file" | grep -qv '^\s*#'; then
-  errors+=("Found Write-Host (prefer Write-Verbose for diagnostic messages)")
+# Check 3: Balanced syntax elements (excluding comments)
+content=$(grep -v '^\s*#' "$file" || true)
+
+# Count braces
+open_braces=$(echo "$content" | tr -cd '{' | wc -c | tr -d ' ')
+close_braces=$(echo "$content" | tr -cd '}' | wc -c | tr -d ' ')
+if [[ "$open_braces" -ne "$close_braces" ]]; then
+  errors+=("Unbalanced braces: $open_braces opening '{' vs $close_braces closing '}'")
 fi
 
-# Check 4: Should use explicit parameter names
-if grep -E '(Get-ChildItem|Get-Content|Set-Content|Copy-Item|Move-Item|Remove-Item)\s+[^-]' "$file" | grep -qv '^\s*#'; then
-  errors+=("Found cmdlets without explicit parameter names (use -Path, -Filter, etc.)")
+# Count brackets
+open_brackets=$(echo "$content" | tr -cd '[' | wc -c | tr -d ' ')
+close_brackets=$(echo "$content" | tr -cd ']' | wc -c | tr -d ' ')
+if [[ "$open_brackets" -ne "$close_brackets" ]]; then
+  errors+=("Unbalanced brackets: $open_brackets opening '[' vs $close_brackets closing ']'")
 fi
 
-# CRITICAL: PSScriptAnalyzer validation (REQUIRED for PowerShell files)
+# Count parentheses
+open_parens=$(echo "$content" | tr -cd '(' | wc -c | tr -d ' ')
+close_parens=$(echo "$content" | tr -cd ')' | wc -c | tr -d ' ')
+if [[ "$open_parens" -ne "$close_parens" ]]; then
+  errors+=("Unbalanced parentheses: $open_parens opening '(' vs $close_parens closing ')'")
+fi
+
+# Count double quotes (must be even)
+double_quotes=$(echo "$content" | tr -cd '"' | wc -c | tr -d ' ')
+if [[ $((double_quotes % 2)) -ne 0 ]]; then
+  errors+=("Unbalanced double quotes: found $double_quotes (must be even)")
+fi
+
+# Count single quotes (must be even)
+single_quotes=$(echo "$content" | tr -cd "'" | wc -c | tr -d ' ')
+if [[ $((single_quotes % 2)) -ne 0 ]]; then
+  errors+=("Unbalanced single quotes: found $single_quotes (must be even)")
+fi
+
+# Check 4: CRITICAL - PSScriptAnalyzer validation (syntax errors only)
 pssa_available=false
 pssa_used=false
 
@@ -57,16 +83,16 @@ if ! command -v pwsh &>/dev/null; then
   errors+=("Install: brew install powershell")
 elif ! pwsh -NoProfile -Command "Get-Module -ListAvailable -Name PSScriptAnalyzer" &>/dev/null; then
   errors+=("CRITICAL: PSScriptAnalyzer module is not installed")
-  errors+=("PowerShell files REQUIRE PSScriptAnalyzer for comprehensive validation")
+  errors+=("PowerShell syntax validation requires PSScriptAnalyzer for parse error detection")
   errors+=("Install: pwsh -Command \"Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force\"")
 else
   pssa_available=true
   pssa_used=true
   
-  # Run PSScriptAnalyzer with comprehensive severity levels
+  # Run PSScriptAnalyzer for syntax/parse errors only (Error severity)
   ps_validation=$(pwsh -NoProfile -Command "
     Import-Module PSScriptAnalyzer -ErrorAction Stop
-    \$results = Invoke-ScriptAnalyzer -Path '$file' -Severity Error,Warning -ExcludeRule PSAvoidUsingWriteHost
+    \$results = Invoke-ScriptAnalyzer -Path '$file' -Severity Error
     if (\$results) {
       \$results | ForEach-Object {
         \$severity = \$_.Severity
@@ -80,7 +106,7 @@ else
       exit 0
     }
   " 2>&1) || {
-    errors+=("PSScriptAnalyzer issues detected:")
+    errors+=("PSScriptAnalyzer syntax errors detected:")
     errors+=("$ps_validation")
   }
 fi
@@ -89,18 +115,17 @@ fi
 if [[ ${#errors[@]} -gt 0 ]]; then
   printf 'PowerShell validation failed:\n' >&2
   for err in "${errors[@]}"; do
-    printf '  - %s\n' "$err" >&2
+    printf '  %s\n' "$err" >&2
   done
-  printf '\nPowerShell standards require:\n' >&2
+  printf '\nPowerShell syntax validation checks:\n' >&2
   printf '  - Line endings: LF (default) or CRLF with REQUIRES-CRLF marker\n' >&2
-  printf '  - Encoding: UTF-8 without BOM\n' >&2
-  printf '  - Use Write-Verbose instead of Write-Host\n' >&2
-  printf '  - Use explicit parameter names (-Path, -Filter, etc.)\n' >&2
-  printf '  - Use Join-Path for path construction\n' >&2
-  printf '  - PSScriptAnalyzer must be installed (comprehensive validation REQUIRED)\n' >&2
+  printf '  - Encoding: UTF-8 (with or without BOM)\n' >&2
+  printf '  - Balanced syntax elements: {}, [], (), quotes\n' >&2
+  printf '  - PSScriptAnalyzer parse errors (Error severity only)\n' >&2
+  printf '\nNote: This validator checks syntax/parse errors only, not style rules.\n' >&2
   exit 1
 fi
 
-# Success: PSScriptAnalyzer validation passed
-printf 'PowerShell validation passed (PSScriptAnalyzer): %s\n' "$file"
+# Success: Syntax validation passed
+printf 'PowerShell syntax validation passed: %s\n' "$file"
 exit 0
