@@ -6,9 +6,16 @@ Automated quality validation system using VS Code agent hooks to enforce coding 
 
 The quality validation system automatically runs linters and validators after file modifications, ensuring code quality and standards compliance before changes are complete.
 
-**Hook Type:** `PostToolUse`
+**Hook Types:** `PreToolUse`, `PostToolUse`
 
-**Triggers On:**
+**PreToolUse Triggers On:**
+
+- `create_file`
+- `replace_string_in_file`
+- `multi_replace_string_in_file`
+- `edit_notebook_file`
+
+**PostToolUse Triggers On:**
 
 - `create_file`
 - `replace_string_in_file`  
@@ -25,12 +32,16 @@ The quality validation system automatically runs linters and validators after fi
 
 ## How It Works
 
-1. **Agent edits a file** → PostToolUse hook fires
-2. **Hook dispatcher** ([validate-file.sh](.github/scripts/validate-file.sh)) receives hook input
-3. **File-specific validator** runs based on file extension
-4. **Validation results:**
-   - [COMPLETE] **Pass:** Agent continues normally
-   - [REJECTED] **Fail:** Validation errors are injected as `additionalContext` for the agent to fix
+1. **Agent edits a file** → PreToolUse hook fires
+2. **Signature prep** ([prep-file.sh](.github/scripts/prep-file.sh)) dispatches PowerShell prep
+3. **PowerShell prep** ([prep-powershell.sh](.github/scripts/prep-powershell.sh)) strips signature blocks
+4. **Agent edits a file** → PostToolUse hook fires
+5. **Hook dispatcher** ([validate-file.sh](.github/scripts/validate-file.sh)) receives hook input
+6. **File-specific validator** runs based on file extension
+7. **Validation results:**
+
+  - [COMPLETE] **Pass:** Agent continues normally
+  - [REJECTED] **Fail:** Validation errors are injected as `additionalContext` for the agent to fix
 
 ## Validator Behavior
 
@@ -105,6 +116,14 @@ Edit [quality-validation.json](.github/hooks/quality-validation.json):
 ```json
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": ".github/scripts/prep-file.sh",
+        "timeout": 30,
+        "cwd": "."
+      }
+    ],
     "PostToolUse": [
       {
         "type": "command",
@@ -200,6 +219,12 @@ chmod +x .github/scripts/validate-*.sh
 ## Architecture
 
 ```text
+PreToolUse Hook
+  ↓
+prep-file.sh
+  ↓
+prep-powershell.sh
+  ↓
 PostToolUse Hook
        ↓
 validate-file.sh (dispatcher)
@@ -225,6 +250,8 @@ markdown  bash      powershell
 ├── hooks/
 │   └── quality-validation.json       # Hook configuration
 ├── scripts/
+│   ├── prep-file.sh                   # PreToolUse dispatcher
+│   ├── prep-powershell.sh             # PowerShell signature remover
 │   ├── validate-file.sh              # Hook dispatcher
 │   ├── validate-markdown.sh          # Markdown validator
 │   ├── validate-bash.sh              # Bash validator

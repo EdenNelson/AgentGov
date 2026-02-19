@@ -1,5 +1,13 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": ".github/scripts/prep-file.sh",
+        "timeout": 30,
+        "cwd": "."
+      }
+    ],
     "PostToolUse": [
       {
         "type": "command",
