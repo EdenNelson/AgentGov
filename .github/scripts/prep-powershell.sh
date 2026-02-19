@@ -31,8 +31,11 @@ for file in "$@"; do
     has_signature=true
   fi
 
-  tmp_file=$(mktemp)
-  trim_file=$(mktemp)
+  # Create temp file in SAME directory as target to ensure atomic mv
+  # Use PID and RANDOM for uniqueness; avoid cross-filesystem non-atomic move
+  file_dir=$(dirname "$file")
+  file_name=$(basename "$file")
+  temp_file="${file_dir}/.${file_name}.$$.$RANDOM.tmp"
 
   awk '
     BEGIN { in_sig = 0; found_start = 0; found_end = 0 }
@@ -44,24 +47,34 @@ for file in "$@"; do
         exit 2
       }
     }
-  ' "$file" > "$tmp_file" || {
-    rm -f "$tmp_file" "$trim_file"
+  ' "$file" > "$temp_file" || {
+    rm -f "$temp_file"
     printf 'Malformed signature block: %s\n' "$file" >&2
     errors=1
     continue
   }
 
-  cp "$tmp_file" "$trim_file"
-
-  if ! cmp -s "$trim_file" "$file"; then
-    mv "$trim_file" "$file"
+  # Atomic replacement: only move if content changed
+  # cmp -s returns 0 if files are identical (no change needed)
+  if ! cmp -s "$temp_file" "$file"; then
+    # Preserve original file permissions before atomic swap
+    chmod --reference="$file" "$temp_file" 2>/dev/null || true
+    
+    # Atomic move operation (same filesystem guarantees atomicity)
+    if ! mv "$temp_file" "$file"; then
+      rm -f "$temp_file"
+      printf 'Failed to update file: %s\n' "$file" >&2
+      errors=1
+      continue
+    fi
+    
     if [[ "$has_signature" == "true" ]]; then
       printf 'Stripped signature block: %s\n' "$file"
     fi
   else
-    rm -f "$trim_file"
+    # No changes needed, clean up temp file
+    rm -f "$temp_file"
   fi
-  rm -f "$tmp_file"
 done
 
 if [[ $errors -ne 0 ]]; then
