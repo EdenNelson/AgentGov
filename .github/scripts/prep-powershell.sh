@@ -27,7 +27,7 @@ for file in "$@"; do
   esac
 
   has_signature=false
-  if grep -qE '^# SIG # Begin signature block[[:space:]]*$' "$file"; then
+  if tr -d '\r' < "$file" | grep -qE '^# SIG # Begin signature block' ; then
     has_signature=true
   fi
 
@@ -37,19 +37,22 @@ for file in "$@"; do
   file_name=$(basename "$file")
   temp_file="${file_dir}/.${file_name}.$$.$RANDOM.tmp"
 
-  awk '
+  # Use tr to normalize line endings (remove CR), then process with AWK
+  # This handles files with CRLF, CR, or LF line endings uniformly
+  # Output is converted to CRLF per PowerShell standards (powershell.instructions.md §File Encoding)
+  tr -d '\r' < "$file" | awk '
     BEGIN { in_sig = 0; found_start = 0; found_end = 0 }
-    /^# SIG # Begin signature block[[:space:]]*$/ { in_sig = 1; found_start = 1; next }
-    /^# SIG # End signature block[[:space:]]*$/ { in_sig = 0; found_end = 1; next }
+    /^# SIG # Begin signature block/ { in_sig = 1; found_start = 1; next }
+    /^# SIG # End signature block/ { in_sig = 0; found_end = 1; next }
     !in_sig { print }
     END {
       if (found_start && !found_end) {
         exit 2
       }
     }
-  ' "$file" > "$temp_file" || {
+  ' | sed 's/$/\r/' > "$temp_file" || {
     rm -f "$temp_file"
-    printf 'Malformed signature block: %s\n' "$file" >&2
+    printf 'Signature strip or line ending conversion failed: %s\n' "$file" >&2
     errors=1
     continue
   }
