@@ -1,15 +1,13 @@
 {
   "version": 1,
   "hooks": {
-    "preToolUse": [
+    "postToolUse": [
       {
         "type": "command",
         "bash": ".github/scripts/prep-file.sh",
         "timeoutSec": 30,
         "cwd": "."
-      }
-    ],
-    "postToolUse": [
+      },
       {
         "type": "command",
         "bash": ".github/scripts/validate-file.sh",

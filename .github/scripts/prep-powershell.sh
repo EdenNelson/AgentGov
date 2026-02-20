@@ -13,8 +13,8 @@ errors=0
 
 for file in "$@"; do
   if [[ ! -f "$file" ]]; then
-    printf 'File not found: %s\n' "$file" >&2
-    errors=1
+    # Skip silently: preToolUse hook runs BEFORE tool executes, so file may not exist yet
+    # This is normal for create_file and similar operations
     continue
   fi
 
