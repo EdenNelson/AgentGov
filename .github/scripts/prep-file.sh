@@ -38,8 +38,9 @@ fi
 
 ps_files=()
 for file in "${files[@]}"; do
-  # Don't skip non-existent files: preToolUse runs BEFORE tool creates the file
-  # If file doesn't exist yet but matches *.ps1|*.psm1|*.psd1, include it
+  if [[ ! -f "$file" ]]; then
+    continue
+  fi
   case "$file" in
     *.ps1|*.psm1|*.psd1)
       ps_files+=("$file")
@@ -52,9 +53,6 @@ if [[ ${#ps_files[@]} -eq 0 ]]; then
   exit 0
 fi
 
-# prep-powershell.sh handles non-existent files gracefully:
-# - If file doesn't exist, it skips it (no-op)
-# - If file exists, it processes it
 if ! output=$(.github/scripts/prep-powershell.sh "${ps_files[@]}" 2>&1); then
   message=$(printf '%s\n' "PreToolUse: PowerShell prep failed." "$output" | jq -Rs .)
   printf '{\n'
