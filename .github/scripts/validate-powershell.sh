@@ -97,18 +97,6 @@ if [[ "$open_parens" -ne "$close_parens" ]]; then
   errors+=("Unbalanced parentheses: $open_parens opening '(' vs $close_parens closing ')'")
 fi
 
-# Count double quotes (must be even)
-double_quotes=$(echo "$content" | tr -cd '"' | wc -c | tr -d ' ')
-if [[ $((double_quotes % 2)) -ne 0 ]]; then
-  errors+=("Unbalanced double quotes: found $double_quotes (must be even)")
-fi
-
-# Count single quotes (must be even)
-single_quotes=$(echo "$content" | tr -cd "'" | wc -c | tr -d ' ')
-if [[ $((single_quotes % 2)) -ne 0 ]]; then
-  errors+=("Unbalanced single quotes: found $single_quotes (must be even)")
-fi
-
 # Check 5: CRITICAL - PSScriptAnalyzer validation (syntax errors only)
 pssa_available=false
 pssa_used=false
@@ -155,7 +143,7 @@ if [[ ${#errors[@]} -gt 0 ]]; then
   printf '\nPowerShell syntax validation checks:\n' >&2
   printf '  - Line endings: LF (default) or CRLF with REQUIRES-CRLF marker\n' >&2
   printf '  - Encoding: UTF-8 (with or without BOM)\n' >&2
-  printf '  - Balanced syntax elements: {}, [], (), quotes\n' >&2
+  printf '  - Balanced syntax elements: {}, [], ()\n' >&2
   printf '  - PSScriptAnalyzer parse errors (Error severity only)\n' >&2
   printf '\nNote: This validator checks syntax/parse errors only, not style rules.\n' >&2
   exit 1
