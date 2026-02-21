@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Markdown fixer: auto-corrects common markdown issues
+# Markdown fixer: auto-corrects common markdown issues per markdown.instructions.md
 # Purpose: Clean up files automatically before validation
 # Args: $1 = file path
 
@@ -21,61 +21,93 @@ fi
 # Ensure file ends with LF (not CRLF)
 if file "$file" | grep -q 'CRLF'; then
   dos2unix "$file" 2>/dev/null || {
-    # Fallback: use sed to convert CRLF to LF
     sed -i '' 's/$//' "$file"
   }
 fi
 
-# Fix 1: Replace prohibited emojis with text equivalents
-# Must handle each emoji separately for reliable sed replacement
-sed -i '' \
-  's/✅/[COMPLETE]/g' \
-  "$file"
+# Fix 1: Replace prohibited emojis with text equivalents per markdown.instructions.md §2.2
+sed -i '' 's/✅/[COMPLETE]/g' "$file"
+sed -i '' 's/⏳/[PENDING]/g' "$file"
+sed -i '' 's/❌/[REJECTED]/g' "$file"
+sed -i '' 's/⚠️/[WARNING]/g' "$file"
+sed -i '' 's/🛑/[CRITICAL]/g' "$file"
+sed -i '' 's/🔍/[REVIEW]/g' "$file"
+sed -i '' 's/📝/[NOTE]/g' "$file"
+sed -i '' 's/💡/[TIP]/g' "$file"
 
-sed -i '' \
-  's/⏳/[PENDING]/g' \
-  "$file"
+# Fix 2: Convert Setext-style headings (=== and ---) to ATX-style (#, ##)
+# Process with awk to handle multi-line patterns
+awk '
+  NR > 1 && /^[=]+\s*$/ {
+    # Previous line was a level 1 heading (Setext style)
+    prev_line = prev_content
+    sub(/^[=]+\s*$/, "")  # Clear this line
+    print "# " prev_line
+    prev_content = ""
+    next
+  }
+  NR > 1 && /^[-]+\s*$/ {
+    # Previous line was a level 2 heading (Setext style)
+    prev_line = prev_content
+    sub(/^[-]+\s*$/, "")  # Clear this line
+    print "## " prev_line
+    prev_content = ""
+    next
+  }
+  {
+    if (NR > 1 && prev_content != "") {
+      print prev_content
+    }
+    prev_content = $0
+  }
+  END {
+    if (prev_content != "") print prev_content
+  }
+' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
 
-sed -i '' \
-  's/❌/[REJECTED]/g' \
-  "$file"
+# Fix 3: Normalize unordered list markers (* and + to -)
+# Preserve indentation
+sed -i '' 's/^\(\s*\)\*/\1-/g' "$file"
+sed -i '' 's/^\(\s*\)+/\1-/g' "$file"
 
-sed -i '' \
-  's/⚠️/[WARNING]/g' \
-  "$file"
+# Fix 4: Normalize blank lines around ATX headings (one blank line before and after)
+# Use awk for multi-line pattern matching and reconstruction
+awk '
+  {
+    if ($0 ~ /^#{1,6}\s/) {
+      # This is a heading
+      if (NR > 1 && prev_line != "" && prev_line !~ /^[[:space:]]*$/) {
+        # Previous line is not blank; add blank line before heading
+        print ""
+      }
+      print $0
+      skip_next_blank = 0
+    } else if (prev_line ~ /^#{1,6}\s/ && $0 ~ /^[[:space:]]*$/) {
+      # Previous line was heading, current is blank; keep it
+      print $0
+      skip_next_blank = 1
+    } else if (prev_line ~ /^#{1,6}\s/ && $0 !~ /^[[:space:]]*$/) {
+      # Previous line was heading, current is content; ensure exactly one blank line
+      print ""
+      print $0
+      skip_next_blank = 0
+    } else if (skip_next_blank && $0 ~ /^[[:space:]]*$/) {
+      # Skip extra blank lines after heading
+      skip_next_blank = 1
+    } else {
+      print $0
+      skip_next_blank = 0
+    }
+    prev_line = $0
+  }
+' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
 
-sed -i '' \
-  's/🛑/[CRITICAL]/g' \
-  "$file"
+# Fix 5: Remove trailing whitespace from all lines
+sed -i '' 's/[[:space:]]*$//' "$file"
 
-sed -i '' \
-  's/🔍/[INVESTIGATE]/g' \
-  "$file"
-
-sed -i '' \
-  's/📝/[NOTE]/g' \
-  "$file"
-
-sed -i '' \
-  's/💡/[IDEA]/g' \
-  "$file"
-
-# Fix 2: Ensure file ends with exactly one newline (no blank lines at EOF)
-# Remove all trailing whitespace first
-sed -i '' -e :a -e '/^\s*$/d;N;ba' "$file" 2>/dev/null || true
-
-# Then ensure single trailing newline
+# Fix 6: Ensure file ends with exactly one newline
 if [[ -n "$(tail -c 1 "$file")" ]]; then
   printf '\n' >> "$file"
 fi
 
-# Fix 3: Remove trailing whitespace from all lines
-sed -i '' 's/[[:space:]]*$//' "$file"
-
-# Fix 4: Ensure consistent spacing around fenced code blocks
-# Add blank line before ```
-sed -i '' '/^```/i\
-' "$file" 2>/dev/null || true
-
-# Success
 exit 0
