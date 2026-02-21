@@ -58,6 +58,9 @@ for file in "${files[@]}"; do
     *.md)
       fixer=".github/scripts/fix-markdown.sh"
       ;;
+    *.sh)
+      fixer=".github/scripts/fix-bash.sh"
+      ;;
     *.ps1|*.psm1|*.psd1)
       fixer=".github/scripts/fix-powershell.sh"
       ;;
