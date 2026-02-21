@@ -13,8 +13,8 @@ tool_name=$(printf '%s' "$input" | jq -r '.tool_name // empty')
 tool_input=$(printf '%s' "$input" | jq -r '.tool_input // {}')
 
 # Only validate file edit operations
-if [[ "$tool_name" != "replace_string_in_file" && 
-      "$tool_name" != "create_file" && 
+if [[ "$tool_name" != "replace_string_in_file" &&
+      "$tool_name" != "create_file" &&
       "$tool_name" != "multi_replace_string_in_file" &&
       "$tool_name" != "edit_notebook_file" ]]; then
   # Not a file edit operation; skip validation
@@ -55,10 +55,13 @@ for file in "${files[@]}"; do
   if [[ ! -f "$file" ]]; then
     continue
   fi
-  
+
   # Determine file type and validator
   validator=""
   case "$file" in
+    .github/skills/*/SKILL.md)
+      validator=".github/scripts/validate-skills.sh"
+      ;;
     *.md)
       validator=".github/scripts/validate-markdown.sh"
       ;;
@@ -73,7 +76,7 @@ for file in "${files[@]}"; do
       continue
       ;;
   esac
-  
+
   # Run validator if it exists
   if [[ -x "$validator" ]]; then
     if ! validation_output=$("$validator" "$file" 2>&1); then
