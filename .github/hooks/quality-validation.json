@@ -12,6 +12,12 @@
     "postToolUse": [
       {
         "type": "command",
+        "bash": ".github/scripts/fix-file.sh",
+        "timeoutSec": 30,
+        "cwd": "."
+      },
+      {
+        "type": "command",
         "bash": ".github/scripts/validate-file.sh",
         "timeoutSec": 30,
         "cwd": ".",
