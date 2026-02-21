@@ -37,12 +37,18 @@ else
   fi
 fi
 
-# Fix 2: Ensure file ends with exactly one newline
+# Fix 2: Replace em dash with ASCII hyphen per ADR-0014 & powershell.instructions.md
+# Em dash (U+2014) forbidden; must use ASCII hyphen (U+002D)
+# Handle all Unicode em dash variations
+sed -i '' 's/—/-/g' "$file"
+sed -i '' 's/–/-/g' "$file"
+
+# Fix 3: Ensure file ends with exactly one newline
 if [[ -n "$(tail -c 1 "$file")" ]]; then
   printf '\n' >> "$file"
 fi
 
-# Fix 3: Remove trailing whitespace from all lines
+# Fix 4: Remove trailing whitespace from all lines
 sed -i '' 's/[[:space:]]*$//' "$file"
 
 # Success
