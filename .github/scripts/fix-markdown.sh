@@ -21,7 +21,7 @@ fi
 # Ensure file ends with LF (not CRLF)
 if file "$file" | grep -q 'CRLF'; then
   dos2unix "$file" 2>/dev/null || {
-    sed -i '' 's/$//' "$file"
+    sed -i '' 's/\r$//' "$file"
   }
 fi
 
@@ -36,20 +36,26 @@ sed -i '' 's/📝/[NOTE]/g' "$file"
 sed -i '' 's/💡/[TIP]/g' "$file"
 
 # Fix 2: Convert Setext-style headings (=== and ---) to ATX-style (#, ##)
+# Only convert if previous line has text content (not a horizontal rule)
 # Process with awk to handle multi-line patterns
 awk '
-  NR > 1 && /^[=]+\s*$/ {
+  NR > 1 && /^[=]+\s*$/ && prev_content !~ /^[[:space:]]*$/ {
     # Previous line was a level 1 heading (Setext style)
+    # Only convert if prev line had actual text
     prev_line = prev_content
     sub(/^[=]+\s*$/, "")  # Clear this line
     print "# " prev_line
     prev_content = ""
     next
   }
-  NR > 1 && /^[-]+\s*$/ {
+  NR > 1 && /^[-]{3,}\s*$/ && prev_content !~ /^[[:space:]]*$/ && prev_content !~ /^#{1,6}\s/ {
     # Previous line was a level 2 heading (Setext style)
+    # Only convert if:
+    # - previous line had text (not blank)
+    # - previous line is not already an ATX heading
+    # - current line has 3+ dashes (Setext underline)
     prev_line = prev_content
-    sub(/^[-]+\s*$/, "")  # Clear this line
+    sub(/^[-]{3,}\s*$/, "")  # Clear this line
     print "## " prev_line
     prev_content = ""
     next
@@ -66,9 +72,10 @@ awk '
 ' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
 
 # Fix 3: Normalize unordered list markers (* and + to -)
-# Preserve indentation
-sed -i '' 's/^\(\s*\)\*/\1-/g' "$file"
-sed -i '' 's/^\(\s*\)+/\1-/g' "$file"
+# Preserve indentation, only match list markers (require space after marker)
+# This prevents matching **bold** or *italic* at start of line
+sed -i '' 's/^\(\s*\)\* /\1- /g' "$file"
+sed -i '' 's/^\(\s*\)+ /\1- /g' "$file"
 
 # Fix 4: Normalize blank lines around ATX headings (one blank line before and after)
 # Use awk for multi-line pattern matching and reconstruction
