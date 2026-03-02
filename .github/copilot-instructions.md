@@ -138,7 +138,7 @@ All governance artifacts must use: **Eden Nelson**
 **Behavior:**
 
 - Wait for user input at startup
-- Respond to `/scribe` command activation
+- Respond to `@scribe` command activation
 - OR automatically load default mode (Pragmatic Architect) on first substantive user input
 
 ### Non-Interactive Agents
@@ -155,13 +155,13 @@ All governance artifacts must use: **Eden Nelson**
 
 ## Command: /scribe (The Scribe)
 
-**Trigger:** User types `/scribe` or selects the scribe Custom Agent.
+**Trigger:** User types `@scribe` or selects the scribe Custom Agent.
 
 1. ACTIVATE: scribe Custom Agent (`.github/agents/scribe.agent.md`)
 2. CONFIRM: Path-specific instructions (governance standards) auto-load based on file patterns
 3. BLOCK: Do NOT request on-demand skills (templates, internal-governance) during intake
 ## Command: /codeplanner (Code Planner)
-**Trigger:** User types `/codeplanner` or selects the code-planner Custom Agent.
+**Trigger:** User types `@codeplanner` or selects the code-planner Custom Agent.
 **Purpose:** Activate Code Planner to map a Scribe requirement to existing code patterns.
 **Behavior:**
 1. ACTIVATE: code-planner Custom Agent (`.github/agents/code-planner.agent.md`)
@@ -169,7 +169,7 @@ All governance artifacts must use: **Eden Nelson**
 3. OUTPUT: `code-context-<YYYYMMDD>-<topic>.md`
 4. HANDOFF: Suggest Edge Planner activation when complete
 ## Command: /edgeplanner (Edge Planner)
-**Trigger:** User types `/edgeplanner` or selects the edge-planner Custom Agent.
+**Trigger:** User types `@edgeplanner` or selects the edge-planner Custom Agent.
 **Purpose:** Activate Edge Planner for adversarial audit and risk analysis.
 **Behavior:**
 1. ACTIVATE: edge-planner Custom Agent (`.github/agents/edge-planner.agent.md`)
@@ -177,7 +177,7 @@ All governance artifacts must use: **Eden Nelson**
 3. OUTPUT: `risk-assessment-<YYYYMMDD>-<topic>.md`
 4. HANDOFF: Suggest Planning Architect activation when complete
 ## Command: /planningarchitect (Planning Architect)
-**Trigger:** User types `/planningarchitect` or selects the planning-architect Custom Agent.
+**Trigger:** User types `@planningarchitect` or selects the planning-architect Custom Agent.
 **Purpose:** Activate Planning Architect to synthesize research into draft plan.
 **Behavior:**
 1. ACTIVATE: planning-architect Custom Agent (`.github/agents/planning-architect.agent.md`)
@@ -187,8 +187,8 @@ All governance artifacts must use: **Eden Nelson**
 ## Persona Activation & Mode Switching
 
 - Personas are mutually exclusive Custom Agents. Default is **Architect** (architect Custom Agent).
-- **Scribe** is activated only when the user selects the scribe agent or types `/scribe` and remains active until explicitly exited; otherwise the session stays **Architect**.
-- **Pipeline agents** (Code Planner, Edge Planner, Planning Architect) are activated explicitly via commands (`/codeplanner`, `/edgeplanner`, `/planningarchitect`) or agent dropdown selection.
+- **Scribe** is activated only when the user selects the scribe agent or types `@scribe` and remains active until explicitly exited; otherwise the session stays **Architect**.
+- **Pipeline agents** (Code Planner, Edge Planner, Planning Architect) are activated explicitly via commands (`@codeplanner`, `@edgeplanner`, `@planningarchitect`) or agent dropdown selection.
 - When reviewing scribe-plan files (SPEC_PROTOCOL §2.4), use **Architect** agent only; Scribe Prime Directives do not apply.
 - Agents are user-selected from the agent dropdown; activation is explicit.
 
